@@ -42,7 +42,7 @@ It is extensible, providing a more convenient way to calculate numbers:
 
     $ ./EasyCalculator
     >>> defun lg(x) = log10(x)
-    >>> lg(3)+lg(5)
+    >>> lg(3) + lg(5)
     1.17609
     >>> defun max2(a, b) = (a > b): a; b;
     >>> max2(12, 40)
