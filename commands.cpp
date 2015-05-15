@@ -206,11 +206,11 @@ void sequence(const std::string &str){
   switch(mode){
   case Integer:
     try{
+      sum = 0;
+      product = 1;
       v = 0;
       mpz_class t;
       for(i=0; i<l; i++){
-	sum = 0;
-	product = 1;
 	t = Int::eval(expr);
 	v = v + 1;
 	sum += t;

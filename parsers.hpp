@@ -17,6 +17,8 @@ namespace Parsers {
     mpz_class abs(const std::vector<mpz_class> &argv);
     mpz_class sgn(const std::vector<mpz_class> &argv);
     mpz_class fac(const std::vector<mpz_class> &argv);
+    mpz_class P(const std::vector<mpz_class> &argv);
+    mpz_class C(const std::vector<mpz_class> &argv);
     mpz_class max(const std::vector<mpz_class> &argv);
     mpz_class min(const std::vector<mpz_class> &argv);
     mpz_class gcd(const std::vector<mpz_class> &argv);

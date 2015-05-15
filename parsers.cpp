@@ -77,7 +77,47 @@ mpz_class fac(const std::vector<mpz_class> &argv){
   return result;
 }
 
+
+mpz_class P(const std::vector<mpz_class> &argv){
+  assert_positive(argv[0]);
+  assert_positive(argv[1]);
+  if(argv[0] < argv[1])
+    throw "Permutation: Out of function definition";
+  mpz_class n = argv[0];
+  mpz_class r = argv[1];
+  mpz_class result = 1;
+  while(r--){
+    result *= n;
+    n--;
+  }
+  return result;
+}
+
+
+mpz_class C(const std::vector<mpz_class> &argv){
+  assert_non_negative(argv[0]);
+  assert_non_negative(argv[1]);
+  if(argv[0] < argv[1])
+    throw "Combination: Out of function definition";
+  mpz_class n = argv[0];
+  mpz_class r = argv[1];
+
+  if(n == 0)
+    return 1;
+  if(r == 0)
+    return 1;
+
+  if(r > n/2)
+    r = n - r;
+  mpz_class result = 1;
+  mpz_class i;
+  for(i=1; i<=r; i++)
+    result = result*(n-i+1)/i;
   
+  return result;
+}
+
+
 mpz_class max(const std::vector<mpz_class> &argv){
   return (argv[0] > argv[1])? argv[0]: argv[1];
 }
@@ -119,6 +159,8 @@ void init(){
   parser.functions["abs"] = Expr::Function<mpz_class>(abs, 1);
   parser.functions["sgn"] = Expr::Function<mpz_class>(sgn, 1);
   parser.functions["fac"] = Expr::Function<mpz_class>(fac, 1);
+  parser.functions["P"] = Expr::Function<mpz_class>(P, 2);
+  parser.functions["C"] = Expr::Function<mpz_class>(C, 2);
   parser.functions["max"] = Expr::Function<mpz_class>(max, 2);
   parser.functions["min"] = Expr::Function<mpz_class>(min, 2);
   parser.functions["gcd"] = Expr::Function<mpz_class>(gcd, 2);

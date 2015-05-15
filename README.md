@@ -151,6 +151,8 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	abs(x)
 	sgn(x)	(sign function)
 	fac(x)	(factorial of x)
+	P(n, r) (permutation)
+	C(n, r) (combination)
 	max(a, b)
 	min(a, b)
 	gcd(a, b)
