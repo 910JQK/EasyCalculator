@@ -99,7 +99,7 @@ Variables and constants support.
 	mode ? (display current mode)
 
 ### Commands
-Press tab key twice to show the list of commands. Type the folling command to show details about commands.
+Press tab key twice to show the list of commands. Type the following command to show details about commands.
 
     help COMMAND
 
@@ -183,7 +183,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	sum = 6
 	product = 0
 
-	Ex.2
+	Ex. 2
 	>>> seq 10:2^_
 	0: 1
 	1: 2
