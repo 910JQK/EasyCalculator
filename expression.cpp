@@ -433,7 +433,8 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       #endif
       if((token_str == "+" || token_str == "-") && not_evaluable)
 	token_str = '(' + token_str + ')';
-      if(!(op && (token_str == "*-" || token_str == "/-")) ){
+      /* bad fix */
+      if(!(op && (token_str == "*-" || token_str == "/-" || token_str == "^-")) ){
 	Token<T> t(prev, token_str);
 	tokens.push_back(t);
 	token_str = "";
