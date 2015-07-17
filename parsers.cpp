@@ -43,7 +43,12 @@ mpz_class mod(const mpz_class &left, const mpz_class &right){
 
 
 mpz_class power(const mpz_class &left, const mpz_class &right){
-  assert_non_negative(right);
+  if(right < 0 && left == -1)
+    return -1 - 2*(-right%2 - 1);
+  if(right < 0 && left != 1)
+    return 0;
+  if(right == 0 && left == 0)
+    throw "Math Error";
   mpz_class x = left;
   mpz_class n = right;
   mpz_class result(1);
@@ -186,6 +191,8 @@ double convert(const std::string &str){
 
   
 double power(const double &left, const double &right){
+  if(left == 0 && right == 0)
+    throw "Math Error";
   return pow(left, right);
 }
 
