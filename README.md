@@ -68,8 +68,6 @@ Separate integer mode and float mode,  providing fast integer power calculating.
 Variables and constants support.
 
     $ ./EasyCalculator
-    >>> sin(PI/6)
-    0.5
     >>> set x = 1
     1
     >>> x
@@ -171,7 +169,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 
 	seq n: expression
     
-    The expression will be parsed n times with variable "_" changing from 0 to n-1, generating the sequence. The sum as well as the product will be figured out.
+The expression will be parsed n times with variable "_" changing from 0 to n-1, generating the sequence. The sum as well as the product will be figured out.
 
 ### Examples for command "seq"
 
