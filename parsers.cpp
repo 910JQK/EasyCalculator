@@ -43,6 +43,7 @@ mpz_class mod(const mpz_class &left, const mpz_class &right){
 
 
 mpz_class power(const mpz_class &left, const mpz_class &right){
+  assert_non_negative(right);
   mpz_class x = left;
   mpz_class n = right;
   mpz_class result(1);

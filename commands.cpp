@@ -197,7 +197,7 @@ void sequence(const std::string &str){
     return;
   }
   int i, l = std::stoi(count);
-  if(l <= 1)
+  if(l < 1)
     return;
   mpz_class sum, product;
   mpz_class &v = Int::parser.variables["_"];
