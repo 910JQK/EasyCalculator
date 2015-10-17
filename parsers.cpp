@@ -73,6 +73,11 @@ mpz_class sgn(const std::vector<mpz_class> &argv){
 }
 
   
+mpz_class sqrt(const std::vector<mpz_class> &argv){
+  return sqrt(argv[0]);
+}
+
+
 mpz_class fac(const std::vector<mpz_class> &argv){
   assert_non_negative("fac", argv[0]);
   mpz_class result = 1;
@@ -165,6 +170,7 @@ void init(){
   parser.operators["^"] = Expr::Operator<mpz_class>(Expr::R, 85, power);
   parser.functions["abs"] = Expr::Function<mpz_class>(abs, 1);
   parser.functions["sgn"] = Expr::Function<mpz_class>(sgn, 1);
+  parser.functions["sqrt"] = Expr::Function<mpz_class>(sqrt, 1);
   parser.functions["fac"] = Expr::Function<mpz_class>(fac, 1);
   parser.functions["P"] = Expr::Function<mpz_class>(P, 2);
   parser.functions["C"] = Expr::Function<mpz_class>(C, 2);
