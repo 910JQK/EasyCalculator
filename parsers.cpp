@@ -223,6 +223,11 @@ double sqrt_(const std::vector<double> &argv){
 }
 
 
+double cbrt_(const std::vector<double> &argv){
+  return cbrt(argv[0]);
+}
+
+
 double floor_(const std::vector<double> &argv){
   return floor(argv[0]);
 }
@@ -294,6 +299,7 @@ void init(){
   parser.functions["abs"] = Expr::Function<double>(abs, 1);
   parser.functions["sgn"] = Expr::Function<double>(sgn, 1);
   parser.functions["sqrt"] = Expr::Function<double>(sqrt_, 1);
+  parser.functions["cbrt"] = Expr::Function<double>(cbrt_, 1);
   parser.functions["floor"] = Expr::Function<double>(floor_, 1);
   parser.functions["ceil"] = Expr::Function<double>(ceil_, 1);
   parser.functions["sin"] = Expr::Function<double>(sin_, 1);
