@@ -18,15 +18,15 @@ Expr::Parser<mpz_class> parser(convert, "%^");
 gmp_randclass random(gmp_randinit_default);  
 
 
-inline bool assert_positive(const mpz_class &n){
+inline bool assert_positive(std::string func_name, const mpz_class &n){
   if(n <= 0)
-    throw "Out of function definition";
+    throw func_name + "(): Out of function definition";
 }
 
 
-inline bool assert_non_negative(const mpz_class &n){
+inline bool assert_non_negative(std::string func_name, const mpz_class &n){
   if(n < 0)
-    throw "Out of function definition";
+    throw func_name + "(): Out of function definition";
 }
   
 
@@ -37,8 +37,9 @@ mpz_class convert(const std::string &str){
 
 mpz_class mod(const mpz_class &left, const mpz_class &right){
   if(right == 0)
-    throw "Divide by zero";
-  return (left % right);
+    throw "Math Error: Division by zero";
+  mpz_class result = left % right;
+  return (result < 0)? (result + right): result;
 }
 
 
@@ -48,7 +49,7 @@ mpz_class power(const mpz_class &left, const mpz_class &right){
   if(right < 0 && left != 1)
     return 0;
   if(right == 0 && left == 0)
-    throw "Math Error";
+    throw "Math Error: 0 to the power of 0 is undefined";
   mpz_class x = left;
   mpz_class n = right;
   mpz_class result(1);
@@ -73,7 +74,7 @@ mpz_class sgn(const std::vector<mpz_class> &argv){
 
   
 mpz_class fac(const std::vector<mpz_class> &argv){
-  assert_non_negative(argv[0]);
+  assert_non_negative("fac", argv[0]);
   mpz_class result = 1;
   mpz_class n = argv[0];
   while(n){
@@ -85,10 +86,10 @@ mpz_class fac(const std::vector<mpz_class> &argv){
 
 
 mpz_class P(const std::vector<mpz_class> &argv){
-  assert_positive(argv[0]);
-  assert_positive(argv[1]);
+  assert_positive("P", argv[0]);
+  assert_positive("P", argv[1]);
   if(argv[0] < argv[1])
-    throw "Permutation: Out of function definition";
+    throw "P(): Out of function definition";
   mpz_class n = argv[0];
   mpz_class r = argv[1];
   mpz_class result = 1;
@@ -101,10 +102,10 @@ mpz_class P(const std::vector<mpz_class> &argv){
 
 
 mpz_class C(const std::vector<mpz_class> &argv){
-  assert_non_negative(argv[0]);
-  assert_non_negative(argv[1]);
+  assert_non_negative("C", argv[0]);
+  assert_non_negative("C", argv[1]);
   if(argv[0] < argv[1])
-    throw "Combination: Out of function definition";
+    throw "C(): Out of function definition";
   mpz_class n = argv[0];
   mpz_class r = argv[1];
 
@@ -135,8 +136,8 @@ mpz_class min(const std::vector<mpz_class> &argv){
 
 
 mpz_class gcd(const mpz_class &left, const mpz_class &right){
-  assert_non_negative(left);
-  assert_non_negative(right);
+  assert_non_negative("gcd", left);
+  assert_non_negative("gcd", right);
   if(right == 0)
     return left;
   return gcd(right, left % right);
@@ -154,7 +155,7 @@ mpz_class lcm(const std::vector<mpz_class> &argv){
 
 
 mpz_class rand(const std::vector<mpz_class> &argv){
-  assert_positive(argv[0]);
+  assert_positive("rand", argv[0]);
   return random.get_z_range(argv[0]);
 }
 
@@ -192,14 +193,14 @@ double convert(const std::string &str){
   
 double power(const double &left, const double &right){
   if(left == 0 && right == 0)
-    throw "Math Error";
+    throw "Math Error: 0 to the power of 0 is undefined";
   return pow(left, right);
 }
 
 
 double mod(const double &left, const double &right){
   if(right == 0)
-    throw "Divide by zero";
+    throw "Math Error: Division by zero";
   return fmod(left, right);
 }
 
