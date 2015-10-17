@@ -346,7 +346,7 @@ complex convert(const std::string &str){
   return complex(std::stod(str), 0);
 }
 
-  
+
 complex power(const complex &left, const complex &right){
   if(left == complex(0, 0) && right == complex(0, 0))
     throw "Math Error: 0 to the power of 0 is undefined";
@@ -435,7 +435,7 @@ void init(){
   parser.decimal_point_enabled = true;
 }
 
-  
+
 }
 
 

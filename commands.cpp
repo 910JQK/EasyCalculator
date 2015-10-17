@@ -367,10 +367,10 @@ void defun(const std::string &str){
       Int::parser.set_function(id, conditions, expressions, arguments);
       break;
     case Float:
-      Double::parser.set_function(id, conditions, expressions, arguments); 
+      Double::parser.set_function(id, conditions, expressions, arguments);
       break;
     case Complex:
-      Complex::parser.set_function(id, conditions, expressions, arguments); 
+      Complex::parser.set_function(id, conditions, expressions, arguments);
       break;
     }
   }
