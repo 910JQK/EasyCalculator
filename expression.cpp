@@ -54,7 +54,7 @@ T multiply(const T &left, const T &right){
 template <class T>
 T divide(const T &left, const T &right){
   if(right == 0)
-    throw "Divide by zero";
+    throw "Math Error: Division by zero";
   return left / right;
 }
 

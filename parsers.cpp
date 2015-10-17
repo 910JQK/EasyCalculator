@@ -274,6 +274,11 @@ double exp_(const std::vector<double> &argv){
 }
 
 
+double erf_(const std::vector<double> &argv){
+  return erf(argv[0]);
+}
+
+
 double log_(const std::vector<double> &argv){
   return log(argv[0]);
 }
@@ -310,6 +315,7 @@ void init(){
   parser.functions["acos"] = Expr::Function<double>(acos_, 1);
   parser.functions["atan"] = Expr::Function<double>(atan_, 1);
   parser.functions["exp"] = Expr::Function<double>(exp_, 1);
+  parser.functions["erf"] = Expr::Function<double>(erf_, 1);
   parser.functions["log"] = Expr::Function<double>(log_, 1);
   parser.functions["log2"] = Expr::Function<double>(log2_, 1);
   parser.functions["log10"] = Expr::Function<double>(log10_, 1);
