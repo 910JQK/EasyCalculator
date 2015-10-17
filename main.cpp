@@ -18,6 +18,7 @@ bool quiet = false;
 void init_parsers(){
   Parsers::Int::init();
   Parsers::Double::init();
+  Parsers::Complex::init();
 }
 
 

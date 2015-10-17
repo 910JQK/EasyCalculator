@@ -1,5 +1,6 @@
 #include <stack>
 #include <gmpxx.h>
+#include <complex>
 #include "expression.hpp"
 
 
@@ -10,6 +11,8 @@ template class Parser<mpz_class>;
 template class Function<mpz_class>;
 template class Parser<double>;
 template class Function<double>;
+template class Parser<std::complex<double>>;
+template class Function<std::complex<double>>;
   
 
 const std::regex BLANK("[ \\n\\t\\0]+");

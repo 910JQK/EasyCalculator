@@ -1,7 +1,11 @@
 #ifndef EASY_CALCULATOR_PARSERS_HPP
 #define EASY_CALCULATOR_PARSERS_HPP
 #include <gmpxx.h>
+#include <complex>
 #include "expression.hpp"
+
+
+typedef std::complex<double> complex;
 
 
 namespace Parsers {
@@ -37,6 +41,7 @@ namespace Parsers {
     double abs(const std::vector<double> &argv);
     double sgn(const std::vector<double> &argv);
     double sqrt_(const std::vector<double> &argv);
+    double cbrt_(const std::vector<double> &argv);
     double floor_(const std::vector<double> &argv);
     double ceil_(const std::vector<double> &argv);    
     double sin_(const std::vector<double> &argv);
@@ -50,6 +55,27 @@ namespace Parsers {
     double log2_(const std::vector<double> &argv);
     double log10_(const std::vector<double> &argv);
     double rand_(const std::vector<double> &argv);
+  }
+  namespace Complex {
+    extern Expr::Parser<complex> parser;
+    extern void init();
+    extern inline complex eval(const std::string &expression){
+      return parser.parse(expression);
+    }
+    complex convert(const std::string &str);
+    complex power(const complex &left, const complex &right);
+    complex abs(const std::vector<complex> &argv);
+    complex arg(const std::vector<complex> &argv);
+    complex conj(const std::vector<complex> &argv);
+    complex sqrt_(const std::vector<complex> &argv);
+    complex sin_(const std::vector<complex> &argv);
+    complex cos_(const std::vector<complex> &argv);
+    complex tan_(const std::vector<complex> &argv);
+    complex asin_(const std::vector<complex> &argv);
+    complex acos_(const std::vector<complex> &argv);
+    complex atan_(const std::vector<complex> &argv);
+    complex exp_(const std::vector<complex> &argv);
+    complex log_(const std::vector<complex> &argv);
   }
 }
 

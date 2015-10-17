@@ -16,7 +16,7 @@ Mode mode = Float;
 
 
 Command commands[] = {
-  {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode"},
+  {"mode", cmd_mode, "mode [int|float|complex]\n\tSwitch mode or display current mode"},
   {"eval", eval, "eval expression\n\tCalculate expressions."},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
@@ -51,6 +51,9 @@ void eval(const std::string &expr){
     case Float:
       std::cout << Double::eval(expr) << '\n';
 	break;
+    case Complex:
+      std::cout << Complex::eval(expr) << '\n';
+	break;
     }
   } 
   CATCH
@@ -62,10 +65,14 @@ void cmd_mode(const std::string &str){
     mode = Integer;
   else if(str == "float")
     mode = Float;
+  else if(str == "complex")
+    mode = Complex;
   else if(mode == Integer)
     std::cout << "int" << '\n';
   else if(mode == Float)
     std::cout << "float" << '\n';
+  else if(mode == Complex)
+    std::cout << "complex" << '\n';
 }
 
 
@@ -114,6 +121,7 @@ void set_var(const std::string &str){
   const std::string &expr = pair.expr;
   mpz_class value;
   double value_f;
+  complex value_c;
   try {
     switch(mode){
     case Integer:
@@ -125,6 +133,11 @@ void set_var(const std::string &str){
       value_f = Double::eval(expr);
       Double::parser.set_var(id, value_f);
       std::cout << value_f << '\n';
+      break;
+    case Complex:
+      value_c = Complex::eval(expr);
+      Complex::parser.set_var(id, value_c);
+      std::cout << value_c << '\n';
       break;
     }
   }
@@ -141,6 +154,7 @@ void set_const(const std::string &str){
   const std::string &expr = pair.expr;
   mpz_class value;
   double value_f;
+  complex value_c;
   try {
     switch(mode){
     case Integer:
@@ -152,6 +166,11 @@ void set_const(const std::string &str){
       value_f = Double::eval(expr);
       Double::parser.set_var(id, value_f);
       std::cout << value_f << '\n';
+      break;
+    case Complex:
+      value_c = Complex::eval(expr);
+      Complex::parser.set_var(id, value_c);
+      std::cout << value_c << '\n';
       break;
     }
   }
@@ -168,6 +187,9 @@ void unset(const std::string &str){
       break;
     case Float:
       Double::parser.unset(str);
+      break;
+    case Complex:
+      Complex::parser.unset(str);
       break;
     }
   }
@@ -242,6 +264,8 @@ void sequence(const std::string &str){
     }
     CATCH
     break;
+  case Complex:
+    std::cout << "Error: Complex sequence hasn't been implemented\n";
   }
 }
 
@@ -344,6 +368,9 @@ void defun(const std::string &str){
       break;
     case Float:
       Double::parser.set_function(id, conditions, expressions, arguments); 
+      break;
+    case Complex:
+      Complex::parser.set_function(id, conditions, expressions, arguments); 
       break;
     }
   }

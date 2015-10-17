@@ -20,7 +20,7 @@ extern Command commands[];
 
 
 enum Mode {
-  Integer, Float
+  Integer, Float, Complex
 };
 
 

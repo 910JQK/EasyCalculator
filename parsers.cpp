@@ -336,4 +336,107 @@ void init(){
 }
 
 
+namespace Complex {
+
+
+Expr::Parser<complex> parser(convert, "^");
+
+
+complex convert(const std::string &str){
+  return complex(std::stod(str), 0);
+}
+
+  
+complex power(const complex &left, const complex &right){
+  if(left == complex(0, 0) && right == complex(0, 0))
+    throw "Math Error: 0 to the power of 0 is undefined";
+  return std::pow(left, right);
+}
+
+
+complex abs(const std::vector<complex> &argv){
+  return std::abs(argv[0]);
+}
+
+
+complex arg(const std::vector<complex> &argv){
+  return std::arg(argv[0]);
+}
+
+
+complex conj(const std::vector<complex> &argv){
+  return std::conj(argv[0]);
+}
+
+
+complex sqrt_(const std::vector<complex> &argv){
+  return std::sqrt(argv[0]);
+}
+
+
+complex sin_(const std::vector<complex> &argv){
+  return std::sin(argv[0]);
+}
+
+
+complex cos_(const std::vector<complex> &argv){
+  return std::cos(argv[0]);
+}
+
+
+complex tan_(const std::vector<complex> &argv){
+  return std::tan(argv[0]);
+}
+
+
+complex asin_(const std::vector<complex> &argv){
+  return std::asin(argv[0]);
+}
+
+
+complex acos_(const std::vector<complex> &argv){
+  return std::acos(argv[0]);
+}
+
+
+complex atan_(const std::vector<complex> &argv){
+  return std::atan(argv[0]);
+}
+
+
+complex exp_(const std::vector<complex> &argv){
+  return std::exp(argv[0]);
+}
+
+
+complex log_(const std::vector<complex> &argv){
+  return std::log(argv[0]);
+}
+
+
+void init(){
+  parser.operators["^"] = Expr::Operator<complex>(Expr::R, 85, power);
+  parser.functions["abs"] = Expr::Function<complex>(abs, 1);
+  parser.functions["arg"] = Expr::Function<complex>(arg, 1);
+  parser.functions["conj"] = Expr::Function<complex>(conj, 1);
+  parser.functions["sqrt"] = Expr::Function<complex>(sqrt_, 1);
+  parser.functions["sin"] = Expr::Function<complex>(sin_, 1);
+  parser.functions["cos"] = Expr::Function<complex>(cos_, 1);
+  parser.functions["tan"] = Expr::Function<complex>(tan_, 1);
+  parser.functions["asin"] = Expr::Function<complex>(asin_, 1);
+  parser.functions["acos"] = Expr::Function<complex>(acos_, 1);
+  parser.functions["atan"] = Expr::Function<complex>(atan_, 1);
+  parser.functions["exp"] = Expr::Function<complex>(exp_, 1);
+  parser.functions["log"] = Expr::Function<complex>(log_, 1);
+  parser.constants["PI"] = 3.141592653589793;
+  parser.constants["i"] = complex(0, 1);
+  parser.constants["j"] = complex(0, 1);
+  parser.scientific_notation_enabled = true;
+  parser.decimal_point_enabled = true;
+}
+
+  
+}
+
+
 }
