@@ -169,6 +169,14 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
     const name = expression
     unset name
 
+### Command "factor"
+
+Example:
+	>>> factor 10
+	1*2*5
+	>>> factor 100
+	1*2^2*5^2
+
 ### Command "seq"
 
 	seq n: expression
