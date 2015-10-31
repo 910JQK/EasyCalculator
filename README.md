@@ -53,7 +53,7 @@ It is extensible, providing a more convenient way to calculate numbers:
     
 Separate integer mode and float mode,  providing fast integer power calculating.
     
-    $ time echo -e "mode int \n 2^10^6" | ./EasyCalculator -q > /dev/null
+    $ time echo "int 2^10^6" | ./EasyCalculator -q > /dev/null
     
     real    0m0.518s
     user	0m0.413s
@@ -95,6 +95,8 @@ Variables and constants support.
 	mode float (default, IEEE 754 double)
 	mode int (arbitrary-precision integer, GMP)
 	mode ? (display current mode)
+	int expr (evaluate expr in int mode)
+	float expr (evaluate expr in float mode)
 
 ### Commands
 Press tab key twice to show the list of commands. Type the following command to show details about commands.
