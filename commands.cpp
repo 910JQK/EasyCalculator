@@ -17,7 +17,9 @@ Mode mode = Float;
 
 Command commands[] = {
   {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode"},
-  {"eval", eval, "eval expression\n\tCalculate expressions."},
+  {"eval", eval, "eval expression\n\tCalculate value expressions."},
+  {"int", eval_int, "eval expression in int mode\n\tCalculate value of expressions in int mode"},
+  {"float", eval_float, "eval expression in float mode\n\tCalculate value of expressions in float mode"},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
   {"defun", defun, "defun name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
@@ -41,19 +43,31 @@ inline bool check(const std::string &str){
 }
 
 
-void eval(const std::string &expr){
-  using namespace Parsers;
+void eval_int(const std::string &expr){
   try {
-    switch(mode){
-    case Integer:
-      std::cout << Int::eval(expr) << '\n';
-      break;
-    case Float:
-      std::cout << Double::eval(expr) << '\n';
-	break;
-    }
-  } 
+    std::cout << Parsers::Int::eval(expr) << '\n';
+  }
   CATCH
+}
+
+
+void eval_float(const std::string &expr){
+  try {
+    std::cout << Parsers::Double::eval(expr) << '\n';
+  }
+  CATCH
+}
+
+
+void eval(const std::string &expr){
+  switch(mode){
+  case Integer:
+    eval_int(expr);
+    break;
+  case Float:
+    eval_float(expr);
+    break;
+  }
 }
 
 
