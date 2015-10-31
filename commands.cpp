@@ -18,8 +18,9 @@ Mode mode = Float;
 Command commands[] = {
   {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode"},
   {"eval", eval, "eval expression\n\tCalculate value expressions."},
-  {"int", eval_int, "eval expression in int mode\n\tCalculate value of expressions in int mode"},
-  {"float", eval_float, "eval expression in float mode\n\tCalculate value of expressions in float mode"},
+  {"int", eval_int, "int expression\n\tCalculate value of expressions in int mode."},
+  {"factor", factor, "factor expression\n\tFactor integer numbers."},
+  {"float", eval_float, "float expression\n\tCalculate value of expressions in float mode."},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
   {"defun", defun, "defun name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
@@ -46,6 +47,14 @@ inline bool check(const std::string &str){
 void eval_int(const std::string &expr){
   try {
     std::cout << Parsers::Int::eval(expr) << '\n';
+  }
+  CATCH
+}
+
+
+void factor(const std::string &expr){
+  try {
+    Parsers::Int::factor(Parsers::Int::eval(expr));
   }
   CATCH
 }

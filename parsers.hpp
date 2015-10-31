@@ -11,6 +11,7 @@ namespace Parsers {
     extern inline mpz_class eval(const std::string &expression){
       return parser.parse(expression);
     }
+    extern void factor(mpz_class n);
     mpz_class convert(const std::string &str);
     mpz_class power(const mpz_class &left, const mpz_class &right);
     mpz_class mod(const mpz_class &left, const mpz_class &right);

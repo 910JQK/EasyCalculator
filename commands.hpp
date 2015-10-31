@@ -30,6 +30,8 @@ extern void eval(const std::string &expr);
 
 void eval_int(const std::string &expr);
 
+void factor(const std::string &expr);
+
 void eval_float(const std::string &expr);
 
 void cmd_mode(const std::string &str);

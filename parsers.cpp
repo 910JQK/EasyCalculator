@@ -165,6 +165,36 @@ mpz_class rand(const std::vector<mpz_class> &argv){
 }
 
 
+void factor(mpz_class n){
+  if(n < 0){
+    std::cout << "factor: positive number required";
+  }else if(n == 0){
+    std::cout << "0";
+  }else if(n == 1){
+    std::cout << "1";
+  }else{
+    std::cout << "1";
+    mpz_class L = sqrt(n)+1;
+    for(mpz_class i=2; i<=L; i++){
+      mpz_class p = 0;
+      while(n%i == 0){
+	n /= i;
+	p++;
+      }
+      if(p > 0){
+	if(p == 1)
+	  std::cout << "*" << i;	  
+	else
+	  std::cout << "*" << i << "^" << p;
+      }
+    }
+    if(n != 1)
+      std::cout << "*" << n;
+  }
+  std::cout << '\n';
+}
+
+
 void init(){
   parser.operators["%"] = Expr::Operator<mpz_class>(Expr::R, 80, mod);
   parser.operators["^"] = Expr::Operator<mpz_class>(Expr::R, 85, power);
