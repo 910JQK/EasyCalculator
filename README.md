@@ -147,6 +147,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	log2(x)
 	log10(x)
 	rand() (generate random number in range [0, 1] )
+	det2(a, b, c, d) = a*d - b*c
 	
 #### Integer Mode
     
@@ -160,6 +161,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	gcd(a, b)
 	lcm(a, b)
 	rand(n) (generate random number in range [0, n) )
+	det2(a, b, c, d) = a*d - b*c
 
 ### Variables and constants
 #### Builtin constant
