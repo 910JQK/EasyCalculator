@@ -170,6 +170,13 @@ mpz_class det2(const std::vector<mpz_class> &argv){
 }
 
 
+mpz_class det3(const std::vector<mpz_class> &argv){
+  return argv[0]*(argv[4]*argv[8] - argv[5]*argv[7])
+    - argv[1]*(argv[3]*argv[8] - argv[5]*argv[6])
+    + argv[2]*(argv[3]*argv[7] - argv[4]*argv[6]);
+}
+
+
 void factor(mpz_class n){
   if(n < 0){
     std::cerr << "factor: positive number required";
@@ -216,6 +223,7 @@ void init(){
   random.seed(time(NULL));
   parser.functions["rand"] = Expr::Function<mpz_class>(rand, 1);
   parser.functions["det2"] = Expr::Function<mpz_class>(det2, 4);
+  parser.functions["det3"] = Expr::Function<mpz_class>(det3, 9);
 }
 
 
@@ -346,6 +354,13 @@ double det2(const std::vector<double> &argv){
 }
 
 
+double det3(const std::vector<double> &argv){
+  return argv[0]*(argv[4]*argv[8] - argv[5]*argv[7])
+    - argv[1]*(argv[3]*argv[8] - argv[5]*argv[6])
+    + argv[2]*(argv[3]*argv[7] - argv[4]*argv[6]);
+}
+
+
 void init(){
   parser.operators["%"] = Expr::Operator<double>(Expr::R, 80, mod);
   parser.operators["^"] = Expr::Operator<double>(Expr::R, 85, power);
@@ -368,6 +383,7 @@ void init(){
   parser.functions["log10"] = Expr::Function<double>(log10_, 1);
   parser.functions["rand"] = Expr::Function<double>(rand_, 0);
   parser.functions["det2"] = Expr::Function<double>(det2, 4);
+  parser.functions["det3"] = Expr::Function<double>(det3, 9);
   parser.constants["PI"] = 3.141592653589793;
   parser.scientific_notation_enabled = true;
   parser.decimal_point_enabled = true;
