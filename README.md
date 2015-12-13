@@ -183,7 +183,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	log2(x)
 	log10(x)
 	rand() (generate random number in range [0, 1] )
-    deg(d, m, s) (convert d°m′s′′ to degree)
+    deg(d, m, s) (convert d°m′s″ to degree)
 	det2(a, b, c, d) = a*d - b*c
     det3(a11, a12, a13, a21, a22, a23, a31, a32, a33)
 	
