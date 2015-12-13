@@ -13,10 +13,12 @@
 
 
 Mode mode = Float;
+AngleUnit angle_unit = rad;
 
 
 Command commands[] = {
-  {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode"},
+  {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode."},
+  {"angle", cmd_angle, "angle [rad|deg|grad]\n\tSwitch angle unit or display current angle unit."},
   {"eval", eval, "eval expression\n\tCalculate value expressions."},
   {"int", eval_int, "int expression\n\tCalculate value of expressions in int mode."},
   {"factor", factor, "factor expression\n\tFactor integer numbers."},
@@ -89,6 +91,40 @@ void cmd_mode(const std::string &str){
     std::cout << "int" << '\n';
   else if(mode == Float)
     std::cout << "float" << '\n';
+}
+
+
+void cmd_angle(const std::string &str){
+  if(str == "rad")
+    angle_unit = rad;
+  else if(str == "deg")
+    angle_unit = deg;
+  else if(str == "grad")
+    angle_unit = grad;
+  else if(angle_unit == rad)
+    std::cout << "rad" << '\n';
+  else if(angle_unit == deg)
+    std::cout << "deg" << '\n';
+  else if(angle_unit == grad)
+    std::cout << "grad" << '\n';
+}
+
+
+double to_rad(double value){
+  if(angle_unit == deg)
+    return value*(PI/180);
+  else if(angle_unit == grad)
+    return value*(PI/200);
+  return value;
+}
+
+
+double angle(double value){
+  if(angle_unit == deg)
+    return value*(180/PI);
+  else if(angle_unit == grad)
+    return value*(200/PI);
+  return value;
 }
 
 

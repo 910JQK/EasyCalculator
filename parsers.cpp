@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+#include "commands.hpp"
 #include "parsers.hpp"
 
 
@@ -290,32 +291,37 @@ double ceil_(const std::vector<double> &argv){
 
 
 double sin_(const std::vector<double> &argv){
-  return sin(argv[0]);
+  return sin(to_rad(argv[0]));
 }
 
 
 double cos_(const std::vector<double> &argv){
-  return cos(argv[0]);
+  return cos(to_rad(argv[0]));
 }
 
 
 double tan_(const std::vector<double> &argv){
-  return tan(argv[0]);
+  return tan(to_rad(argv[0]));
 }
 
 
 double asin_(const std::vector<double> &argv){
-  return asin(argv[0]);
+  return angle(asin(argv[0]));
 }
 
 
 double acos_(const std::vector<double> &argv){
-  return acos(argv[0]);
+  return angle(acos(argv[0]));
 }
 
 
 double atan_(const std::vector<double> &argv){
-  return atan(argv[0]);
+  return angle(atan(argv[0]));
+}
+
+
+double atan2_(const std::vector<double> &argv){
+  return angle(atan2(argv[0], argv[1]));
 }
 
 
@@ -349,6 +355,11 @@ double rand_(const std::vector<double> &argv){
 }
 
 
+double deg(const std::vector<double> &argv){
+  return argv[0] + argv[1]/60 + argv[2]/3600;
+}
+
+
 double det2(const std::vector<double> &argv){
   return (argv[0]*argv[3] - argv[1]*argv[2]);
 }
@@ -376,15 +387,17 @@ void init(){
   parser.functions["asin"] = Expr::Function<double>(asin_, 1);
   parser.functions["acos"] = Expr::Function<double>(acos_, 1);
   parser.functions["atan"] = Expr::Function<double>(atan_, 1);
+  parser.functions["atan2"] = Expr::Function<double>(atan2_, 2);
   parser.functions["exp"] = Expr::Function<double>(exp_, 1);
   parser.functions["erf"] = Expr::Function<double>(erf_, 1);
   parser.functions["log"] = Expr::Function<double>(log_, 1);
   parser.functions["log2"] = Expr::Function<double>(log2_, 1);
   parser.functions["log10"] = Expr::Function<double>(log10_, 1);
   parser.functions["rand"] = Expr::Function<double>(rand_, 0);
+  parser.functions["deg"] = Expr::Function<double>(deg, 3);
   parser.functions["det2"] = Expr::Function<double>(det2, 4);
   parser.functions["det3"] = Expr::Function<double>(det3, 9);
-  parser.constants["PI"] = 3.141592653589793;
+  parser.constants["PI"] = PI;
   parser.scientific_notation_enabled = true;
   parser.decimal_point_enabled = true;
   srand(time(NULL));
