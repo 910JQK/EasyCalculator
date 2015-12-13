@@ -415,6 +415,9 @@ void defun(const std::string &str){
 void parse_logical_line(const std::string &line){
   if(!line.size())
     return;
+
+  if(line[0] == '#')
+    return;
   
   int start = line.find(" ");
   if(start == std::string::npos || start == line.size()-1){

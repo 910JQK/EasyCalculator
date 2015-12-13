@@ -20,7 +20,7 @@ MIT License
 
 Dependencies:
     `gmp`
-	`readline`
+    `readline`
 
 Building dependencies:
 	`g++`
@@ -50,6 +50,21 @@ It is extensible, providing a more convenient way to calculate numbers:
     >>> max2(12, -25)
     12
 
+File import is available:
+
+    $ cat test.ecs
+    const A = 2
+    const B = 4
+    defun avg(a, b) = (a+b)/2
+    
+    $ ./EasyCalculator
+    >>> import test
+    >>> A
+    2
+    >>> B
+    4
+    >>> avg(A, B)
+    3
     
 Separate integer mode and float mode,  providing fast integer power calculating.
     
@@ -69,15 +84,12 @@ Variables and constants support.
 
     $ ./EasyCalculator
     >>> set x = 1
-    1
     >>> x
     1
     >>> set x = x + 1
-    2
     >>> x
     2
     >>> const y = 0
-    0
     >>> y
     0
     >>> unset x
@@ -97,6 +109,29 @@ Variables and constants support.
 	mode ? (display current mode)
 	int expr (evaluate expr in int mode)
 	float expr (evaluate expr in float mode)
+
+Each mode has separate scope. Variables and functions defined in one mode can't be accessed in another.
+
+### Angle Units
+
+    angle rad (default)
+    angle deg
+    angle grad
+    angle ? (display current unit)
+
+The input of triangle functions and the output of the inverse triangle functions are determined by the unit.
+
+    2*PI rad = 360 deg = 400 grad
+    
+### File Import
+
+Use `import FileName` to import a file. Appendix `.ecs` is automatically appended. If `FileName.ecs` does not exist, it will try `FileName`.
+
+Logical lines are available. Use `;;` to separate them.
+
+Comments are also available and start with `#` in a logical line.
+
+When the program enters a imported file and executes its commands, it will turn into float mode. After that, it will restore to the original mode you set before. 
 
 ### Commands
 Press tab key twice to show the list of commands. Type the following command to show details about commands.
@@ -141,13 +176,16 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	asin(x)
 	acos(x)
 	atan(x)
+    atan2(y, x)
 	exp(x)
 	erf(x)
 	log(x)
 	log2(x)
 	log10(x)
 	rand() (generate random number in range [0, 1] )
+    deg(d, m, s) (convert d°m′s′′ to degree)
 	det2(a, b, c, d) = a*d - b*c
+    det3(a11, a12, a13, a21, a22, a23, a31, a32, a33)
 	
 #### Integer Mode
     
@@ -162,6 +200,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	lcm(a, b)
 	rand(n) (generate random number in range [0, n) )
 	det2(a, b, c, d) = a*d - b*c
+    det3(a11, a12, a13, a21, a22, a23, a31, a32, a33)
 
 ### Variables and constants
 #### Builtin constant
@@ -254,9 +293,3 @@ Condition is also an expression. If its value is true (non-zero), corresponding 
     >>> defun gcd2(a, b) = (b > 0): gcd2(b, a % b); (b = 0): a;
     >>> gcd2(36, 96)
     12
-
-### Configuration file:
-
-    calc_config.txt
-    
-Fixed, evaluated line by line when the program starts. You can define constants and functions in it to extend the program.
