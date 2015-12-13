@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "parsers.hpp"
 #include "commands.hpp"
@@ -19,6 +20,7 @@ AngleUnit angle_unit = rad;
 Command commands[] = {
   {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode."},
   {"angle", cmd_angle, "angle [rad|deg|grad]\n\tSwitch angle unit or display current angle unit."},
+  {"import", import, "import file\n\tImport a script file."},
   {"eval", eval, "eval expression\n\tCalculate value expressions."},
   {"int", eval_int, "int expression\n\tCalculate value of expressions in int mode."},
   {"factor", factor, "factor expression\n\tFactor integer numbers."},
@@ -178,12 +180,12 @@ void set_var(const std::string &str){
     case Integer:
       value = Int::eval(expr);
       Int::parser.set_var(id, value);
-      std::cout << value << '\n';
+      // std::cout << value << '\n';
       break;
     case Float:
       value_f = Double::eval(expr);
       Double::parser.set_var(id, value_f);
-      std::cout << value_f << '\n';
+      // std::cout << value_f << '\n';
       break;
     }
   }
@@ -205,12 +207,12 @@ void set_const(const std::string &str){
     case Integer:
       value = Int::eval(expr);
       Int::parser.set_const(id, value);
-      std::cout << value << '\n';
+      // std::cout << value << '\n';
       break;
     case Float:
       value_f = Double::eval(expr);
       Double::parser.set_var(id, value_f);
-      std::cout << value_f << '\n';
+      // std::cout << value_f << '\n';
       break;
     }
   }
@@ -407,4 +409,64 @@ void defun(const std::string &str){
     }
   }
   CATCH
+}
+
+
+void parse_logical_line(const std::string &line){
+  if(!line.size())
+    return;
+  
+  int start = line.find(" ");
+  if(start == std::string::npos || start == line.size()-1){
+    eval(std::regex_replace(line, Expr::BLANK, ""));
+    return;
+  }
+  std::string cmd = line.substr(0, start);
+  int i = 0;
+  /* NULL means end of list */
+  while(commands[i].exec != NULL){
+    if(commands[i].name == cmd){
+      commands[i].exec(std::regex_replace(line.substr(start+1, line.size()-start-1), Expr::BLANK, ""));
+      break;
+    }
+    i++;
+  }
+  if(commands[i].exec == NULL)
+    eval(std::regex_replace(line, Expr::BLANK, ""));
+}
+
+
+void parse_line(const std::string &line){
+  /* split logical lines */
+  int start = 0, end = 0;
+  std::string temp;
+  while((end = line.find(";;", start)) != std::string::npos) {
+    temp = line.substr(start, end - start);
+    parse_logical_line(temp);
+    start = end + 2;
+  }
+  temp = line.substr(start, line.size());
+  parse_logical_line(temp);
+}
+
+
+bool read_file(const std::string &file_name){
+  std::ifstream file(file_name);
+  if(!file.good()){
+    return false;
+  }
+  std::string line;
+  while(std::getline(file, line))
+    parse_line(line);
+  return true;
+}
+
+
+void import(const std::string &str){
+  Mode mode_prev = mode;
+  mode = Float;
+  if(!read_file(str+".ecs"))
+    if(!read_file(str))
+      std::cerr << "Import \""<< str << "\": Unable to read file\n";
+  mode = mode_prev;
 }

@@ -19,9 +19,6 @@ struct Pair {
 };
 
 
-extern Command commands[];
-
-
 enum Mode {
   Integer, Float
 };
@@ -31,16 +28,19 @@ enum AngleUnit {
   rad, deg, grad
 };
 
+extern Command commands[];
 
 extern Mode mode;
 
 extern AngleUnit angle_unit;
 
-extern void eval(const std::string &expr);
-
 extern double to_rad(double value);
 
 extern double angle(double value);
+
+extern void parse_line(const std::string &line);
+
+void eval(const std::string &expr);
 
 void eval_int(const std::string &expr);
 
@@ -64,5 +64,10 @@ void sequence(const std::string &str);
 
 void defun(const std::string &str);
 
+void parse_logical_line(const std::string &line);
+
+bool read_file(const std::string &file_name);
+
+void import(const std::string &str);
 
 #endif /* EASY_CALCULATOR_COMMANDS_HPP */
