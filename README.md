@@ -9,7 +9,7 @@
 
 Easy Calculator is an extensible calculator. It parses expressions input and figure out their value. Some operators and functions are available. It has two modes: int and float. Mode int uses GMP arbitrary-precision integer; mode float uses double-precision floating-point number. You can define constants, variables and functions (see below).
 
-It is still testing and may be unstable.
+It is still under development and may be unstable.
 
 
 ### LICENSE
@@ -41,10 +41,10 @@ Run:
 It is extensible, providing a more convenient way to calculate numbers:
 
     $ ./EasyCalculator
-    >>> defun lg(x) = log10(x)
+    >>> def lg(x) = log10(x)
     >>> lg(3) + lg(5)
     1.17609
-    >>> defun max2(a, b) = (a > b): a; b;
+    >>> def max2(a, b) = (a > b): a; b;
     >>> max2(12, 40)
     40
     >>> max2(12, -25)
@@ -55,7 +55,7 @@ File import is available:
     $ cat test.ecs
     const A = 2
     const B = 4
-    defun avg(a, b) = (a+b)/2
+    def avg(a, b) = (a+b)/2
     
     $ ./EasyCalculator
     >>> import test
@@ -98,6 +98,13 @@ Variables and constants support.
     x: no such variable or constant
     >>> y
     y: no such variable or constant
+
+Finding approximate roots of equations using Newton's Method.
+
+    $ ./EasyCalculator
+    >>> root x^2 = 1-x @ 1
+    x = 0.618034
+
 
     
 ## Usage
@@ -250,32 +257,32 @@ The expression will be parsed n times with variable "_" changing from 0 to n-1, 
 	sum = 1023
 	product = 3.51844e+13
 
-### Command "defun"
+### Command "def"
 
-	defun name([args, ...]) = expression
-	defun name([args, ...]) = condition1: expression1; [condition2: expression2; ...]
+	def name([args, ...]) = expression
+	def name([args, ...]) = condition1: expression1; [condition2: expression2; ...]
     
 Condition is also an expression. If its value is true (non-zero), corresponding expression will become the value of the function. If not, the program will check next condition-expression pair. If no condition equals true, the program will tell you "Out of function definition".
 
-### Examples for command "defun"
+### Examples for command "def"
 
 	Ex. 1
-	>>> defun f(x) = 1
+	>>> def f(x) = 1
 	>>> f()
 	1
 
 	Ex. 2
-	>>> defun f(x) = x + 1
+	>>> def f(x) = x + 1
 	>>> f(1)
 	2
 
 	Ex. 3
-	>>> defun a(x, y) = (x + y) / 2
+	>>> def a(x, y) = (x + y) / 2
 	>>> a(3, 5)
 	4
 
 	Ex. 4
-	>>> defun abs2(x) = (x < 0): -x; x;
+	>>> def abs2(x) = (x < 0): -x; x;
 	>>> abs2(-5)
 	5
 	>>> abs2(5)
@@ -283,13 +290,13 @@ Condition is also an expression. If its value is true (non-zero), corresponding 
     
     Ex. 5
     >>> mode int
-    >>> defun fac2(n) = (x > 0): n * fac2(n - 1); (x = 0): 1;
+    >>> def fac2(n) = (x > 0): n * fac2(n - 1); (x = 0): 1;
 	>>> fac(3)
 	6
 	>>> fac(-1)
 	Out of function definition
     
     Ex. 6
-    >>> defun gcd2(a, b) = (b > 0): gcd2(b, a % b); (b = 0): a;
+    >>> def gcd2(a, b) = (b > 0): gcd2(b, a % b); (b = 0): a;
     >>> gcd2(36, 96)
     12

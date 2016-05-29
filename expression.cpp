@@ -270,12 +270,20 @@ bool Parser<T>::is_operator_char(char c){
 
 
 template <class T>
+bool Parser<T>::is_id_available(const std::string &id){
+  return !(key(constants, id) || key(variables, id) || key(functions, id));
+}
+
+
+template <class T>
 void Parser<T>::set_const(const std::string &id, T value){
   if(!id.size())
     throw "Constant was set with empty identifier";
   if(id[0] == '_')
     throw "Identifiers start with \"_\" are reserved";
-  if(key(constants, id) || key(variables, id) || key(functions, id))
+  if(id == "x")
+    throw "Constant name cannot be \"x\", which is reserved for some features";
+  if(!is_id_available(id))
     throw "This identifier is in use";
   constants[id] = value;
 }
@@ -299,6 +307,8 @@ void Parser<T>::set_function(const std::string &id, const std::vector<std::strin
     throw "This identifier is in use";
   if(key(functions, id) && functions[id].builtin)
       throw id + " is builtin";
+  if(id == "x")
+    throw "Function name cannot be \"x\", which is reserved for some features";
   std::vector<FunctionExpression> f_expressions;
   int i;
   for(i=0; i<conditions.size(); i++){

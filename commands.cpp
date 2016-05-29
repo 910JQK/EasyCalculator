@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cmath>
 #include "parsers.hpp"
 #include "commands.hpp"
 
@@ -27,7 +28,8 @@ Command commands[] = {
   {"float", eval_float, "float expression\n\tCalculate value of expressions in float mode."},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
-  {"defun", defun, "defun name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
+  {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
+  {"root", root, "root expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
   {"seq", sequence,"seq n: expression\n\tGenerate sequences and calculate the sum as well as the product. Expression will be parsed n times with variable \"_\" changing from 0 to n-1."},
   {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
   {"help", help, "help command\n\tDisplay information about commands."},
@@ -144,35 +146,33 @@ void help(const std::string &command){
 }
 
 
-inline Pair set_check(const std::string &str){
+inline Pair split_equation(const std::string &str){
   int p = str.find("=");
   if(p == std::string::npos){
     std::cerr << "Missing \"=\"\n";
     return (Pair){"",""};
   }
   if(p == 0){
-    std::cerr << "Missing identifier\n";
+    std::cerr << "Missing left side\n";
     return (Pair){"",""};    
   }
   if(p == str.size()-1){
-    std::cerr << "Missing expression\n";
+    std::cerr << "Missing right side\n";
     return (Pair){"",""};
   }
-  std::string id = str.substr(0, p);
-  std::string expr = str.substr(p+1, str.size());  
-  if(!check(id))
-    return (Pair){"",""};
-  return (Pair){id, expr};
+  std::string left = str.substr(0, p);
+  std::string right = str.substr(p+1, str.size());  
+  return (Pair){left, right};
 }
 
 
 void set_var(const std::string &str){
   using namespace Parsers;
-  Pair pair = set_check(str);
-  if(!pair.id.size())
+  Pair pair = split_equation(str);
+  if(!check(pair.left))
     return;
-  const std::string &id = pair.id;
-  const std::string &expr = pair.expr;
+  const std::string &id = pair.left;
+  const std::string &expr = pair.right;
   mpz_class value;
   double value_f;
   try {
@@ -195,11 +195,11 @@ void set_var(const std::string &str){
 
 void set_const(const std::string &str){
   using namespace Parsers;
-  Pair pair = set_check(str);
-  if(!pair.id.size())
+  Pair pair = split_equation(str);
+  if(!check(pair.left))
     return;
-  const std::string &id = pair.id;
-  const std::string &expr = pair.expr;
+  const std::string &id = pair.left;
+  const std::string &expr = pair.right;
   mpz_class value;
   double value_f;
   try {
@@ -211,7 +211,7 @@ void set_const(const std::string &str){
       break;
     case Float:
       value_f = Double::eval(expr);
-      Double::parser.set_var(id, value_f);
+      Double::parser.set_const(id, value_f);
       // std::cout << value_f << '\n';
       break;
     }
@@ -233,6 +233,68 @@ void unset(const std::string &str){
     }
   }
   CATCH
+}
+
+
+void root(const std::string &str){
+  using namespace Parsers;
+  int p =str.find("@");
+  if(p == std::string::npos){
+    std::cerr << "Missing \"@\"\n";
+    return;
+  }
+  if(p == 0){
+    std::cerr << "Missing equation\n";
+    return;
+  }
+  if(p == str.size()-1){
+    std::cerr << "Missing initial value x0\n";
+    return;
+  }
+  std::string equation = str.substr(0, p);
+  std::string x0 = str.substr(p+1, str.size());
+  Pair pair = split_equation(equation);
+  const std::string &left = pair.left;
+  const std::string &right = pair.right;
+  double x, x_last, fx, fx1, fx2, d, x_original;
+  int count = 0;
+  bool x_in_use;
+  if(mode != Float){
+    std::cerr << "Finding root is only available in float mode\n";
+    return;
+  }
+  if(!Double::parser.is_id_available("x")){
+    x_in_use = true;
+    x_original = Double::eval("x");    
+  }
+  try {
+      x = Double::eval(x0);
+  }
+  CATCH
+  try {
+    do {
+      x_last = x;
+      Double::parser.set_var("x", x);      
+      fx = Double::eval(left) - Double::eval(right);
+      x += 5e-6;
+      Double::parser.set_var("x", x);      
+      fx1 = Double::eval(left) - Double::eval(right);
+      x -= 1e-5;
+      Double::parser.set_var("x", x);      
+      fx2 = Double::eval(left) - Double::eval(right);
+      d = (fx1 - fx2)/1e-5;
+      x += 5e-6;
+      x -= fx/d;
+      if(++count > 1000){
+	std::cerr << "Cannot get proper result by a 1000-time-loop\n";
+	break;
+      }	
+    } while (fabs(x - x_last) >= 1e-6);
+    std::cout << "x = " << x << '\n';
+  }
+  CATCH
+  if(x_in_use)
+    Double::parser.set_var("x", x_original);
 }
 
 
@@ -331,7 +393,7 @@ inline bool split(std::vector<std::string> &tokens, const std::string &text, cha
 }
 
 
-void defun(const std::string &str){
+void def(const std::string &str){
   using namespace Parsers;
   std::string id;
   std::vector<std::string> arguments;

@@ -14,8 +14,8 @@ struct Command {
 
 
 struct Pair {
-  std::string id;
-  std::string expr;
+  std::string left;
+  std::string right;
 };
 
 
@@ -62,7 +62,9 @@ void unset(const std::string &str);
 
 void sequence(const std::string &str);
 
-void defun(const std::string &str);
+void root(const std::string &str);
+
+void def(const std::string &str);
 
 void parse_logical_line(const std::string &line);
 

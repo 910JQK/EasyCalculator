@@ -56,6 +56,7 @@ namespace Expr {
     std::string operator_chars;
     bool is_operator_char(char c);
     T (*convert)(const std::string &str);
+    bool is_id_available(const std::string &id);
     void set_const(const std::string &id, T value);
     void set_var(const std::string &id, T value);
     void set_function(const std::string &id, const std::vector<std::string> &conditions, const std::vector<std::string> &expressions, const std::vector<std::string> &arguments);
