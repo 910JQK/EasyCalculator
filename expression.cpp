@@ -282,7 +282,9 @@ void Parser<T>::set_const(const std::string &id, T value){
   if(id[0] == '_')
     throw "Identifiers start with \"_\" are reserved";
   if(id == "x")
-    throw "Constant name cannot be \"x\", which is reserved for some features";
+    throw "Constant name cannot be \"x\", which is reserved";
+  if(id == "ans")
+    throw "Constant name cannot be \"ans\", which is reserved";
   if(!is_id_available(id))
     throw "This identifier is in use";
   constants[id] = value;
@@ -308,7 +310,9 @@ void Parser<T>::set_function(const std::string &id, const std::vector<std::strin
   if(key(functions, id) && functions[id].builtin)
       throw id + " is builtin";
   if(id == "x")
-    throw "Function name cannot be \"x\", which is reserved for some features";
+    throw "Function name cannot be \"x\", which is reserved";
+  if(id == "ans")
+    throw "Function name cannot be \"ans\", which is reserved";
   std::vector<FunctionExpression> f_expressions;
   int i;
   for(i=0; i<conditions.size(); i++){

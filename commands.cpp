@@ -52,7 +52,9 @@ inline bool check(const std::string &str){
 
 void eval_int(const std::string &expr){
   try {
-    std::cout << Parsers::Int::eval(expr) << '\n';
+    mpz_class ans = Parsers::Int::eval(expr);
+    Parsers::Int::parser.set_var("ans", ans);
+    std::cout << ans << '\n';
   }
   CATCH
 }
@@ -68,7 +70,9 @@ void factor(const std::string &expr){
 
 void eval_float(const std::string &expr){
   try {
-    std::cout << Parsers::Double::eval(expr) << '\n';
+    double ans = Parsers::Double::eval(expr);
+    Parsers::Double::parser.set_var("ans", ans);
+    std::cout << ans << '\n';
   }
   CATCH
 }
