@@ -53,6 +53,7 @@ It is extensible, providing a more convenient way to calculate numbers:
 File import is available:
 
     $ cat test.ecs
+    # Test
     const A = 2
     const B = 4
     def avg(a, b) = (a+b)/2
@@ -98,6 +99,31 @@ Variables and constants support.
     x: no such variable or constant
     >>> y
     y: no such variable or constant
+
+Recording the last result.
+
+    >>> mode int
+    >>> def f(n) = n%2=1: 3*n+1; n/2;
+    >>> f(13)
+    40
+    >>> f(ans)
+    20
+    >>> f(ans)
+    10
+    >>> f(ans)
+    5
+    >>> f(ans)
+    16
+    >>> f(ans)
+    8
+    >>> f(ans)
+    4
+    >>> f(ans)
+    2
+    >>> f(ans)
+    1
+    >>> f(ans)
+    4
 
 Finding approximate roots of equations using Newton's Method.
 
