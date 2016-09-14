@@ -141,7 +141,23 @@ Finding approximate roots of equations using Newton's Method.
     >>> root x^x = 1 @ 10
     x = 1
 
-    
+Solving linear equation systems using Gauss Elimination.
+
+    $ ./EasyCalculator
+    >>> solve 2
+    1 2 3
+    2 1 4
+    1.66667 0.666667
+    >>> solve 2
+    0 1 2
+    2 3 1
+    -2.5 2
+    >>> solve 3
+    2 5 9 1
+    3 2 1 8
+    7 7 6 4
+    12.0556 -17.7222 7.27778
+
 ## Usage
 
 ### Mode
