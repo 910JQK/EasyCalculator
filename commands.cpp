@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <exception>
 #include <cmath>
 #include "parsers.hpp"
 #include "commands.hpp"
@@ -97,7 +98,10 @@ void solve(const std::string &str){
   try {
     n = std::stoi(str);
   }
-  CATCH
+  catch(const std::exception &err) {
+    std::cerr << "dimension count: invalid value" << '\n';
+    return;
+  }
   matrix = new double*[n];
   solution = new double[n];
   for(int i=0; i<n; i++)
