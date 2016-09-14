@@ -48,6 +48,8 @@ void factor(const std::string &expr);
 
 void eval_float(const std::string &expr);
 
+void solve(const std::string &str);
+
 void cmd_mode(const std::string &str);
 
 void cmd_angle(const std::string &str);

@@ -13,7 +13,6 @@
     std::cerr << err << '\n'; \
   }
 
-
 Mode mode = Float;
 AngleUnit angle_unit = rad;
 
@@ -26,6 +25,7 @@ Command commands[] = {
   {"int", eval_int, "int expression\n\tCalculate value of expressions in int mode."},
   {"factor", factor, "factor expression\n\tFactor integer numbers."},
   {"float", eval_float, "float expression\n\tCalculate value of expressions in float mode."},
+  {"solve", solve, "solve n\n\tSolve linear equation system of n dimensions."},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
   {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
@@ -87,6 +87,71 @@ void eval(const std::string &expr){
     eval_float(expr);
     break;
   }
+}
+
+
+void solve(const std::string &str){
+  int n;
+  double **matrix;
+  double *solution;
+  try {
+    n = std::stoi(str);
+  }
+  CATCH
+  matrix = new double*[n];
+  solution = new double[n];
+  for(int i=0; i<n; i++)
+    matrix[i] = new double[n+1];
+  auto is_zero = [](double x) {
+    return (abs(x) < 1e-9);
+  };
+  auto exchange = [matrix, n](int a, int b) {
+    for(int i=0; i<n+1; i++) {
+      double t = matrix[a][i];
+      matrix[a][i] = matrix[b][i];
+      matrix[b][i] = t;
+    }
+  };
+  auto add = [matrix, n](int a, int b, double k) {
+    for(int i=0; i<n+1; i++)
+      matrix[a][i] += matrix[b][i]*k;
+  };
+  for(int i=0; i<n; i++)
+    for(int j=0; j<n+1; j++)
+      std::cin >> matrix[i][j];
+  for(int i=0; i<n; i++) {
+    if(is_zero(matrix[i][i])) {
+      bool ok = false;
+      for(int j=i+1; j<n; j++) {
+	if(!is_zero(matrix[j][i])) {
+	  exchange(j, i);
+	  ok = true;
+	  break;
+	}
+      }
+      if(!ok) {
+	std::cerr << "invalid coefficient matrix" << '\n';
+	return;
+      }
+    }
+    double p = 1/matrix[i][i];
+    for(int j=i; j<n+1; j++)
+      matrix[i][j] *= p;
+    for(int j=i+1; j<n; j++)
+      add(j, i, -matrix[j][i]);
+  }
+  for(int i=n-1; i>=0; i--) {
+    double x = matrix[i][n];
+    for(int j=i+1; j<n+1; j++)
+      x -= matrix[i][j]*solution[j];
+    solution[i] = x;
+  }
+  for(int i=0; i<n; i++) {
+    std::cout << solution[i];
+    if(i != n-1)
+      std::cout << ' ';
+  }
+  std::cout << '\n';
 }
 
 
