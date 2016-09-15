@@ -120,6 +120,12 @@ void solve(const std::string &str){
     for(int i=0; i<n+1; i++)
       matrix[a][i] += matrix[b][i]*k;
   };
+  auto clean = [matrix, solution, n]() {
+    delete[] solution;
+    for(int i=0; i<n; i++)
+      delete[] matrix[i];
+    delete[] matrix;
+  };
   for(int i=0; i<n; i++)
     for(int j=0; j<n+1; j++)
       std::cin >> matrix[i][j];
@@ -134,7 +140,8 @@ void solve(const std::string &str){
 	}
       }
       if(!ok) {
-	std::cerr << "invalid coefficient matrix" << '\n';
+	std::cerr << "invalid augmented matrix" << '\n';
+	clean();
 	return;
       }
     }
@@ -156,6 +163,7 @@ void solve(const std::string &str){
       std::cout << ' ';
   }
   std::cout << '\n';
+  clean();
 }
 
 
