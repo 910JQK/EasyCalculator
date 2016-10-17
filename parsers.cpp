@@ -350,6 +350,23 @@ double log10_(const std::vector<double> &argv){
 }
 
 
+double logfac(const std::vector<double> &argv){
+  double x = argv[0] + 1;
+  if(x == 1 || x == 2)
+    return 0;
+  else
+    return (
+	    (log(2*PI) - log(x))/2
+	    + x*(log(x+1/(12*x-0.1/x)) - 1)
+	    );  
+}
+
+
+double fac(const std::vector<double> &argv){
+  return exp(logfac(argv));
+}
+
+
 double rand_(const std::vector<double> &argv){
   return (double)rand()/RAND_MAX;
 }
@@ -393,6 +410,8 @@ void init(){
   parser.functions["log"] = Expr::Function<double>(log_, 1);
   parser.functions["log2"] = Expr::Function<double>(log2_, 1);
   parser.functions["log10"] = Expr::Function<double>(log10_, 1);
+  parser.functions["logfac"] = Expr::Function<double>(logfac, 1);
+  parser.functions["fac"] = Expr::Function<double>(fac, 1);
   parser.functions["rand"] = Expr::Function<double>(rand_, 0);
   parser.functions["deg"] = Expr::Function<double>(deg, 3);
   parser.functions["det2"] = Expr::Function<double>(det2, 4);
