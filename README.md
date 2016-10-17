@@ -234,7 +234,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	asin(x)
 	acos(x)
 	atan(x)
-    	atan2(y, x)
+    atan2(y, x)
 	exp(x)
 	erf(x)
 	log(x)
