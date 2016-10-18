@@ -31,7 +31,7 @@ Command commands[] = {
   {"const", set_const, "const name = expression\n\tDefine constants."},
   {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
   {"root", root, "root variable: expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
-  {"seq", sequence,"seq n: expression\n\tGenerate sequences and calculate the sum as well as the product. Expression will be parsed n times with variable \"_\" changing from 0 to n-1."},
+  {"seq", sequence,"seq n: [assignment1; assignment2...]: [expression1 | expression2 ...]\n\tGenerate a sequence of length n with variable \"_\" changing from 0 to n-1. Assignments and expressions are evaluated sequently."},
   {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
   {"help", help, "help command\n\tDisplay information about commands."},
   {"END_OF_LIST", NULL, ""}
@@ -227,6 +227,30 @@ void help(const std::string &command){
 }
 
 
+inline bool split(std::vector<std::string> &tokens, const std::string &text, char separator, bool check_ident = false) {
+  int start = 0, end = 0;
+  std::string temp;
+  while((end = text.find(separator, start)) != std::string::npos) {
+    temp = text.substr(start, end - start);
+    if(!temp.size()){
+      std::cerr << "Unexpected empty entry\n";
+      return false;
+    }
+    if((check_ident && !check(temp)) )
+      return false;
+    tokens.push_back(temp);
+    start = end + 1;
+  }
+  temp = text.substr(start);
+  if(!temp.size())
+    return true;
+  if((check_ident && !check(temp)) )
+    return false;
+  tokens.push_back(temp);
+  return true;
+}
+
+
 inline Pair split_equation(const std::string &str){
   int p = str.find("=");
   if(p == std::string::npos){
@@ -384,7 +408,7 @@ void root(const std::string &str){
 
 void sequence(const std::string &str){
   using namespace Parsers;
-  int p =str.find(":");
+  int p = str.find(":");
   if(p == std::string::npos){
     std::cerr << "Missing \":\"\n";
     return;
@@ -398,82 +422,83 @@ void sequence(const std::string &str){
     return;
   }
   std::string count = str.substr(0, p);
-  std::string expr = str.substr(p+1);
-  if(!std::regex_match(count, INTEGER)){
-    std::cerr << "ILLEGAL integer " << count << '\n';
-    return;
-  }
-  int i, l = std::stoi(count);
-  if(l < 1)
-    return;
-  mpz_class sum, product;
-  mpz_class &v = Int::parser.variables["_"];
-  double sum_f, product_f;
-  double &v_f = Double::parser.variables["_"];
+  std::string args = str.substr(p+1);
+  mpz_class l;
   switch(mode){
   case Integer:
-    try{
-      sum = 0;
-      product = 1;
-      v = 0;
-      mpz_class t;
-      for(i=0; i<l; i++){
-	t = Int::eval(expr);
-	v = v + 1;
-	sum += t;
-	product *= t;
-	std::cout << i << ": " << t << '\n';
-      }
-      std::cout << "sum = " << sum << '\n';
-      std::cout << "product = " << product << '\n';
-      Int::parser.variables.erase("_");
+    try {
+      l = Int::eval(count);
     }
     CATCH
     break;
   case Float:
-    try{
-      sum_f = 0;
-      product_f = 1;
-      v_f = 0;
-      double t_f;
-      for(i=0; i<l; i++){
-	t_f = Double::eval(expr);
-	v_f = v_f + 1;
-	sum_f += t_f;
-	product_f *= t_f;
-	std::cout << i << ": " << t_f << '\n';
-      }
-      std::cout << "sum = " << sum_f << '\n';
-      std::cout << "product = " << product_f << '\n';
-      Double::parser.variables.erase("_");
+    try {
+      l = round(Double::eval(count));
     }
     CATCH
     break;
   }
-}
-
-
-inline bool split(std::vector<std::string> &tokens, const std::string &text, char separator, bool check_ident) {
-  int start = 0, end = 0;
-  std::string temp;
-  while((end = text.find(separator, start)) != std::string::npos) {
-    temp = text.substr(start, end - start);
-    if(!temp.size()){
-      std::cerr << "Unexpected empty entry\n";
-      return false;
-    }
-    if((check_ident && !check(temp)) )
-      return false;
-    tokens.push_back(temp);
-    start = end + 1;
+  if(l <= 0) {
+    std::cerr << "seq: count of items must be positive\n";
+    return;
   }
-  temp = text.substr(start, text.size());
-  if(!temp.size())
-    return true;
-  if((check_ident && !check(temp)) )
-    return false;
-  tokens.push_back(temp);
-  return true;
+  std::string assign_str, expr_str = "";
+  p = args.find(":");
+  if(p != std::string::npos) {
+    assign_str = args.substr(0, p);
+    expr_str = args.substr(p+1);
+  } else {
+    assign_str = args;
+  }
+  std::vector<std::string> assignments;
+  std::vector<std::string> expressions;
+  if(!split(assignments, assign_str, ';'))
+    return;
+  if(expr_str.size() != 0)
+    if(!split(expressions, expr_str, '|'))
+      return;
+  mpz_class &I = Int::parser.variables["_"];
+  double &I_f = Double::parser.variables["_"];
+  try {
+    for(mpz_class i=0; i<l; i++) {
+      switch(mode){
+      case Integer:
+	I = i;
+	break;
+      case Float:
+	I_f = i.get_d();
+	break;
+      }
+      for(const std::string &I: assignments) {
+	Pair pair = split_equation(I);
+	if(!check(pair.left))
+	  return;
+	const std::string &id = pair.left;
+	const std::string &expr = pair.right;
+	switch(mode){
+	case Integer:
+	  Int::parser.set_var(id, Int::eval(expr));
+	  break;
+	case Float:
+	  Double::parser.set_var(id, Double::eval(expr));
+	  break;
+	}
+      }
+      for(const std::string &I: expressions) {
+	switch(mode){
+	case Integer:
+	  std::cout << Int::eval(I) << ' ';
+	  break;
+	case Float:
+	  std::cout << Double::eval(I) << ' ';
+	  break;
+	}
+      }
+      if(expr_str.size() != 0)
+	std::cout << '\n';
+    }
+  }
+  CATCH
 }
 
 
