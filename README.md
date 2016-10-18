@@ -128,17 +128,17 @@ Recording the last result.
 Finding approximate roots of equations using Newton's Method.
 
     $ ./EasyCalculator
-    >>> root x^2 = 2 @ 1
+    >>> root x: x^2 = 2 @ 1
     x = 1.41421
-    >>> root x^2 = 1-x @ 1
+    >>> root x: x^2 = 1-x @ 1
     x = 0.618034
-    >>> root cos(x/2) = 0 @ 1
+    >>> root x: cos(x/2) = 0 @ 1
     x = 3.14159
-    >>> root exp(x) = exp(1)*x @ 2
+    >>> root x: exp(x) = exp(1)*x @ 2
     x = 1
-    >>> root log(x) = x-1 @ 5
+    >>> root x: log(x) = x-1 @ 5
     x = 1
-    >>> root x^x = 1 @ 10
+    >>> root x: x^x = 1 @ 10
     x = 1
 
 Solving linear equation systems using Gauss Elimination.
