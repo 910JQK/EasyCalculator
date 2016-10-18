@@ -421,12 +421,16 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
 	  read_e = true;
 	} else if((c == '+' || c == '-') && !(str[i-1] == 'e' || str[i-1] == 'E')){
 	  throw "ILLEGAL number";
+	} else if(!(c >= '0' && c <= '9')){
+	  throw "ILLEGAL number";
 	}
       } else if(decimal_point_enabled){
 	if(c == '.'){
 	  if(read_dot)
 	    throw "ILLEGAL number";
 	  read_dot = true;
+	} else if(!(c >= '0' && c <= '9')){
+	  throw "ILLEGAL number";
 	}
       } else if(!(c >= '0' && c <= '9')){
 	throw "ILLEGAL number";
