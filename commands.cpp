@@ -242,7 +242,7 @@ inline Pair split_equation(const std::string &str){
     return (Pair){"",""};
   }
   std::string left = str.substr(0, p);
-  std::string right = str.substr(p+1, str.size());
+  std::string right = str.substr(p+1);
   return (Pair){left, right};
 }
 
@@ -398,7 +398,7 @@ void sequence(const std::string &str){
     return;
   }
   std::string count = str.substr(0, p);
-  std::string expr = str.substr(p+1, str.size());
+  std::string expr = str.substr(p+1);
   if(!std::regex_match(count, INTEGER)){
     std::cerr << "ILLEGAL integer " << count << '\n';
     return;
@@ -499,7 +499,7 @@ void def(const std::string &str){
     return;
   }
   std::string left = str.substr(0, p);
-  std::string right = str.substr(p+1, str.size());
+  std::string right = str.substr(p+1);
   p = left.find('(');
   if(p == 0){
     std::cerr << "Missing identifier";
