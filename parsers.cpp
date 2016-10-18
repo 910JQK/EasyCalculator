@@ -290,6 +290,11 @@ double ceil_(const std::vector<double> &argv){
 }
 
 
+double round_(const std::vector<double> &argv){
+  return round(argv[0]);
+}
+
+
 double sin_(const std::vector<double> &argv){
   return sin(to_rad(argv[0]));
 }
@@ -404,6 +409,7 @@ void init(){
   parser.functions["cbrt"] = Expr::Function<double>(cbrt_, 1);
   parser.functions["floor"] = Expr::Function<double>(floor_, 1);
   parser.functions["ceil"] = Expr::Function<double>(ceil_, 1);
+  parser.functions["round"] = Expr::Function<double>(round_, 1);
   parser.functions["sin"] = Expr::Function<double>(sin_, 1);
   parser.functions["cos"] = Expr::Function<double>(cos_, 1);
   parser.functions["tan"] = Expr::Function<double>(tan_, 1);
