@@ -389,6 +389,12 @@ double det3(const std::vector<double> &argv){
 }
 
 
+double linspace(const std::vector<double> &argv){
+  // return start + (end-start)*index/(n-1)
+  return argv[0] + (argv[1]-argv[0])*argv[3]/(argv[2]-1);
+}
+
+
 void init(){
   parser.operators["%"] = Expr::Operator<double>(Expr::R, 80, mod);
   parser.operators["^"] = Expr::Operator<double>(Expr::R, 85, power);
@@ -416,6 +422,7 @@ void init(){
   parser.functions["deg"] = Expr::Function<double>(deg, 3);
   parser.functions["det2"] = Expr::Function<double>(det2, 4);
   parser.functions["det3"] = Expr::Function<double>(det3, 9);
+  parser.functions["linspace"] = Expr::Function<double>(linspace, 4);
   parser.constants["PI"] = PI;
   parser.scientific_notation_enabled = true;
   parser.decimal_point_enabled = true;
