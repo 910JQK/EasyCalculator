@@ -242,7 +242,7 @@ inline Pair split_equation(const std::string &str){
     return (Pair){"",""};
   }
   std::string left = str.substr(0, p);
-  std::string right = str.substr(p+1, str.size());  
+  std::string right = str.substr(p+1, str.size());
   return (Pair){left, right};
 }
 
@@ -319,34 +319,38 @@ void unset(const std::string &str){
 
 void root(const std::string &str){
   using namespace Parsers;
-  int p =str.find("@");
-  if(p == std::string::npos){
-    std::cerr << "Missing \"@\"\n";
+  int p0 = str.find(":");
+  if(p0 == std::string::npos){
+    std::cerr << "Missing separator \":\"\n";
     return;
-  }
-  if(p == 0){
+  } else if(p0 == 0){
+    std::cerr << "Missing unknown number\n";
+    return;
+  } else if(p0 == str.size()-1){
     std::cerr << "Missing equation\n";
     return;
   }
-  if(p == str.size()-1){
-    std::cerr << "Missing initial value x0\n";
+  std::string var = str.substr(0, p0);
+  if(!check(var))
+    return;
+  int p1 = str.find("@");
+  if(p1 == std::string::npos){
+    std::cerr << "Missing separator \"@\"\n";
+    return;
+  } else if(p1 == str.size()-1){
+    std::cerr << "Missing initial value\n";
     return;
   }
-  std::string equation = str.substr(0, p);
-  std::string x0 = str.substr(p+1, str.size());
+  std::string equation = str.substr(p0+1, p1-p0-1);
+  std::string x0 = str.substr(p1+1);
   Pair pair = split_equation(equation);
   const std::string &left = pair.left;
   const std::string &right = pair.right;
-  double x, x_last, fx, fx1, fx2, d, x_original;
+  double x, x_last, fx, fx1, fx2, d;
   int count = 0;
-  bool x_in_use;
   if(mode != Float){
     std::cerr << "Finding root is only available in float mode\n";
     return;
-  }
-  if(!Double::parser.is_id_available("x")){
-    x_in_use = true;
-    x_original = Double::eval("x");    
   }
   try {
       x = Double::eval(x0);
@@ -355,27 +359,26 @@ void root(const std::string &str){
   try {
     do {
       x_last = x;
-      Double::parser.set_var("x", x);      
+      Double::parser.set_var(var, x);
       fx = Double::eval(left) - Double::eval(right);
       x += 5e-6;
-      Double::parser.set_var("x", x);      
+      Double::parser.set_var(var, x);
       fx1 = Double::eval(left) - Double::eval(right);
       x -= 1e-5;
-      Double::parser.set_var("x", x);      
+      Double::parser.set_var(var, x);
       fx2 = Double::eval(left) - Double::eval(right);
       d = (fx1 - fx2)/1e-5;
       x += 5e-6;
       x -= fx/d;
       if(++count > 1000){
-	std::cerr << "Cannot get proper result by a 1000-time-loop\n";
+	std::cerr << "Cannot get proper result after an 1000-time-loop\n";
 	break;
       }	
     } while (fabs(x - x_last) >= 1e-6);
-    std::cout << "x = " << x << '\n';
+    std::cout << var << " = " << x << '\n';
+    Double::parser.set_var(var, x);
   }
   CATCH
-  if(x_in_use)
-    Double::parser.set_var("x", x_original);
 }
 
 
@@ -555,13 +558,18 @@ void def(const std::string &str){
 }
 
 
-void parse_logical_line(const std::string &line){
-  if(!line.size())
+void parse_logical_line(const std::string &raw_line){
+  if(!raw_line.size())
     return;
 
-  if(line[0] == '#')
+  if(raw_line[0] == '#')
     return;
   
+  int end = raw_line.find("#");
+  if(end == std::string::npos)
+    end = raw_line.size();
+  const std::string line = raw_line.substr(0, end);
+
   int start = line.find(" ");
   if(start == std::string::npos || start == line.size()-1){
     eval(std::regex_replace(line, Expr::BLANK, ""));

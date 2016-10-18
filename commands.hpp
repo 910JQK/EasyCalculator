@@ -68,7 +68,7 @@ void root(const std::string &str);
 
 void def(const std::string &str);
 
-void parse_logical_line(const std::string &line);
+void parse_logical_line(const std::string &raw_line);
 
 bool read_file(const std::string &file_name);
 
