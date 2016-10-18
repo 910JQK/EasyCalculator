@@ -4,7 +4,7 @@
 **IMPORTANT: This is free software with ABSOLUTELY NO WARRANTY.**
 
 
-**IMPORTANT: This implementation(code) is actually not very good. For that reason, installing the executable file to /opt is suggested.**
+**IMPORTANT: This implementation(code) is actually not very good.**
 
 
 Easy Calculator is an extensible calculator. It parses expressions input and figure out their value. Some operators and functions are available. It has two modes: int and float. Mode int uses GMP arbitrary-precision integer; mode float uses double-precision floating-point number. You can define constants, variables and functions (see below).
