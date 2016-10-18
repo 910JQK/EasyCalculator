@@ -23,7 +23,7 @@ Dependencies:
     `readline`
 
 Building dependencies:
-	`g++`
+    `g++`
     `make`
 	`cmake`
     (C++11 support is required)
@@ -66,7 +66,16 @@ File import is available:
     4
     >>> avg(A, B)
     3
-    
+
+Scientific notation.
+
+    >>> 1e-4
+    0.0001
+    >>> 1e4
+    10000
+    >>> 125 000 000 * 2
+    2.5e+08
+
 Separate integer mode and float mode,  providing fast integer power calculating.
     
     $ time echo "int 2^10^6" | ./EasyCalculator -q > /dev/null
@@ -81,7 +90,7 @@ Separate integer mode and float mode,  providing fast integer power calculating.
     user	0m20.487s
     sys	0m0.023s
     
-Variables and constants support.
+Variables and constants.
 
     $ ./EasyCalculator
     >>> set x = 1
@@ -246,14 +255,15 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
     deg(d, m, s) (convert d°m′s″ to degree)
 	det2(a, b, c, d) = a*d - b*c
     det3(a11, a12, a13, a21, a22, a23, a31, a32, a33)
+    linspace(start, end, n, index) = start + (end-start)*index/(n-1)
 	
 #### Integer Mode
     
-	abs(x)
-	sgn(x)	(sign function)
-	fac(x)	(factorial of x)
-	P(n, r) (permutation)
-	C(n, r) (combination)
+	abs(n)
+	sgn(n)	(sign function)
+	fac(n)	(factorial of n) O(n)
+	P(n, r) (permutation) O(r)
+	C(n, r) (combination) O(r)
 	max(a, b)
 	min(a, b)
 	gcd(a, b)
@@ -272,6 +282,8 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 
 ### Command "factor"
 
+Show the standard prime decomposition of the given integer. (complexity: O(sqrt(n)) )
+
 Example:
 
 	>>> factor 10
@@ -281,34 +293,50 @@ Example:
 
 ### Command "seq"
 
-	seq n: expression
-    
-The expression will be parsed n times with variable "_" changing from 0 to n-1, generating the sequence. The sum as well as the product will be figured out.
+    seq n: [assignment1; assignment2...]: [expression1 | expression2 ...]
+
+Generate a sequence of length n with variable "_" changing from 0 to n-1. Assignments and expressions are evaluated sequently.
 
 ### Examples for command "seq"
 
 	Ex. 1
-	>>> seq 3:_*2
-	0: 0
-	1: 2
-	2: 4
-	sum = 6
-	product = 0
+    >>> seq 10: n=_+1: _ | n | n^2 | n^3
+    0 1 1 1 
+    1 2 4 8 
+    2 3 9 27 
+    3 4 16 64 
+    4 5 25 125 
+    5 6 36 216 
+    6 7 49 343 
+    7 8 64 512 
+    8 9 81 729 
+    9 10 100 1000 
+
 
 	Ex. 2
-	>>> seq 10:2^_
-	0: 1
-	1: 2
-	2: 4
-	3: 8
-	4: 16
-	5: 32
-	6: 64
-	7: 128
-	8: 256
-	9: 512
-	sum = 1023
-	product = 3.51844e+13
+    >>> set s = 0
+    >>> set p = 1
+    >>> seq 10: n=_+1; s=s+n; p=p*n
+    >>> s
+    55
+    >>> p
+    3.6288e+06
+    
+    Ex. 3
+    >>> set n = 10
+    >>> angle deg
+    >>> seq n: x = linspace(0, 90, n, _): x | sin(x) | cos(x) | tan(x)
+    0 0 1 0 
+    10 0.173648 0.984808 0.176327 
+    20 0.34202 0.939693 0.36397 
+    30 0.5 0.866025 0.57735 
+    40 0.642788 0.766044 0.8391 
+    50 0.766044 0.642788 1.19175 
+    60 0.866025 0.5 1.73205 
+    70 0.939693 0.34202 2.74748 
+    80 0.984808 0.173648 5.67128 
+    90 1 6.12323e-17 1.63312e+16 
+
 
 ### Command "def"
 
