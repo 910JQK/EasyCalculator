@@ -237,6 +237,7 @@ Zero is false, non-zero value is true. Logical operators always return 1 as true
 	cbrt(x)
 	floor(x)
 	ceil(x)
+	round(x)
 	sin(x)
 	cos(x)
 	tan(x)
