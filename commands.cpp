@@ -30,7 +30,7 @@ Command commands[] = {
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
   {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
-  {"root", root, "root expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
+  {"root", root, "root variable: expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
   {"seq", sequence,"seq n: expression\n\tGenerate sequences and calculate the sum as well as the product. Expression will be parsed n times with variable \"_\" changing from 0 to n-1."},
   {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
   {"help", help, "help command\n\tDisplay information about commands."},
