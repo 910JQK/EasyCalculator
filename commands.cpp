@@ -19,22 +19,22 @@ AngleUnit angle_unit = rad;
 
 
 Command commands[] = {
-  {"mode", cmd_mode, "mode [int|float]\n\tSwitch mode or display current mode."},
-  {"angle", cmd_angle, "angle [rad|deg|grad]\n\tSwitch angle unit or display current angle unit."},
-  {"import", import, "import file\n\tImport a script file."},
-  {"eval", eval, "eval expression\n\tCalculate value expressions."},
-  {"int", eval_int, "int expression\n\tCalculate value of expressions in int mode."},
-  {"factor", factor, "factor expression\n\tFactor integer numbers."},
-  {"float", eval_float, "float expression\n\tCalculate value of expressions in float mode."},
-  {"solve", solve, "solve n\n\tSolve linear equation system of n dimensions."},
-  {"set", set_var, "set name = expression\n\tSet value for variables."},
-  {"const", set_const, "const name = expression\n\tDefine constants."},
-  {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
-  {"dump", dump, "dump var = mode: expression\n\tdump variable from another mode."},
-  {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
-  {"root", root, "root variable: expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
-  {"seq", sequence,"seq n: [assignment1; assignment2...]: [expression1 | expression2 ...]\n\tGenerate a sequence of length n with variable \"_\" changing from 0 to n-1. Assignments and expressions are evaluated sequently."},
-  {"help", help, "help command\n\tDisplay information about commands."},
+  {"mode", cmd_mode, "mode [int|float]\n\n\tSwitch mode or display current mode."},
+  {"angle", cmd_angle, "angle [rad|deg|grad]\n\n\tSwitch angle unit or display current angle unit."},
+  {"import", import, "import file\n\n\tImport a script file."},
+  {"eval", eval, "eval expression\n\n\tCalculate value of expressions."},
+  {"int", eval_int, "int expression\n\n\tCalculate value of expressions in int mode."},
+  {"factor", factor, "factor expression\n\n\tFactor integer numbers."},
+  {"float", eval_float, "float expression\n\n\tCalculate value of expressions in float mode."},
+  {"solve", solve, "solve n\n\n\tSolve linear equation system of n dimensions."},
+  {"set", set_var, "set name = expression\n\n\tSet value for variables."},
+  {"const", set_const, "const name = expression\n\n\tDefine constants."},
+  {"unset", unset, "unset name\n\n\tUnset variables, constants and functions."},
+  {"dump", dump, "dump var = mode: expression\ndump mode: var = expression\n\n\tDump variables from/to another mode."},
+  {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\n\tDefine functions."},
+  {"root", root, "root variable: expression = expression @ x0\n\n\tFind a root of the equation using Newton's Method."},
+  {"seq", sequence,"seq n: [assignment1; assignment2...]: [expression1 | expression2 ...]\n\n\tGenerate a sequence of length n with variable \"_\" changing from 0 to n-1. Assignments and expressions are evaluated sequently."},
+  {"help", help, "help command\n\n\tDisplay information about commands."},
   {"END_OF_LIST", NULL, ""}
 };
 
