@@ -304,9 +304,12 @@ Dump variables from/to another mode.
     >>> dump t = int: lcm(x, 7)
     >>> t
     21
+    
     Ex. 2
     >>> mode int
     >>> dump float: t = fac(11)
+    >>> float t
+    3.99168e+07
     >>> dump x = float: floor(log10(t))
     >>> x
     7
