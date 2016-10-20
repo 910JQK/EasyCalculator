@@ -43,8 +43,8 @@ const std::regex IDENT("[A-Za-z_][A-Za-z0-9_]*");
 const std::regex INTEGER("[0-9]+");
 
 
-inline bool check(const std::string &str){
-  if(!std::regex_match(str, IDENT)){
+inline bool check(const std::string &str) {
+  if(!std::regex_match(str, IDENT)) {
     std::cerr << "ILLEGAL identifier " << str << '\n';
     return false;
   }
@@ -52,7 +52,7 @@ inline bool check(const std::string &str){
 }
 
 
-void eval_int(const std::string &expr){
+void eval_int(const std::string &expr) {
   try {
     mpz_class ans = Parsers::Int::eval(expr);
     Parsers::Int::parser.set_var("ans", ans);
@@ -62,7 +62,7 @@ void eval_int(const std::string &expr){
 }
 
 
-void factor(const std::string &expr){
+void factor(const std::string &expr) {
   try {
     Parsers::Int::factor(Parsers::Int::eval(expr));
   }
@@ -70,7 +70,7 @@ void factor(const std::string &expr){
 }
 
 
-void eval_float(const std::string &expr){
+void eval_float(const std::string &expr) {
   try {
     double ans = Parsers::Double::eval(expr);
     Parsers::Double::parser.set_var("ans", ans);
@@ -80,8 +80,8 @@ void eval_float(const std::string &expr){
 }
 
 
-void eval(const std::string &expr){
-  switch(mode){
+void eval(const std::string &expr) {
+  switch(mode) {
   case Integer:
     eval_int(expr);
     break;
@@ -92,7 +92,7 @@ void eval(const std::string &expr){
 }
 
 
-void solve(const std::string &str){
+void solve(const std::string &str) {
   int n;
   double **matrix;
   double *solution;
@@ -168,7 +168,7 @@ void solve(const std::string &str){
 }
 
 
-void cmd_mode(const std::string &str){
+void cmd_mode(const std::string &str) {
   if(str == "int")
     mode = Integer;
   else if(str == "float")
@@ -180,7 +180,7 @@ void cmd_mode(const std::string &str){
 }
 
 
-void cmd_angle(const std::string &str){
+void cmd_angle(const std::string &str) {
   if(str == "rad")
     angle_unit = rad;
   else if(str == "deg")
@@ -196,7 +196,7 @@ void cmd_angle(const std::string &str){
 }
 
 
-double to_rad(double value){
+double to_rad(double value) {
   if(angle_unit == deg)
     return value*(PI/180);
   else if(angle_unit == grad)
@@ -205,7 +205,7 @@ double to_rad(double value){
 }
 
 
-double angle(double value){
+double angle(double value) {
   if(angle_unit == deg)
     return value*(180/PI);
   else if(angle_unit == grad)
@@ -214,10 +214,10 @@ double angle(double value){
 }
 
 
-void help(const std::string &command){
+void help(const std::string &command) {
   int i = 0;
-  while(commands[i].exec != NULL){
-    if(commands[i].name == command){
+  while(commands[i].exec != NULL) {
+    if(commands[i].name == command) {
       std::cout << commands[i].help << "\n\n";
       break;
     }
@@ -233,7 +233,7 @@ inline bool split(std::vector<std::string> &tokens, const std::string &text, cha
   std::string temp;
   while((end = text.find(separator, start)) != std::string::npos) {
     temp = text.substr(start, end - start);
-    if(!temp.size()){
+    if(!temp.size()) {
       std::cerr << "Unexpected empty entry\n";
       return false;
     }
@@ -252,27 +252,27 @@ inline bool split(std::vector<std::string> &tokens, const std::string &text, cha
 }
 
 
-inline Pair split_equation(const std::string &str){
+inline Pair split_equation(const std::string &str) {
   int p = str.find("=");
-  if(p == std::string::npos){
+  if(p == std::string::npos) {
     std::cerr << "Missing \"=\"\n";
-    return (Pair){"",""};
+    return (Pair) {"",""};
   }
-  if(p == 0){
+  if(p == 0) {
     std::cerr << "Missing left side\n";
-    return (Pair){"",""};    
+    return (Pair) {"",""};    
   }
-  if(p == str.size()-1){
+  if(p == str.size()-1) {
     std::cerr << "Missing right side\n";
-    return (Pair){"",""};
+    return (Pair) {"",""};
   }
   std::string left = str.substr(0, p);
   std::string right = str.substr(p+1);
-  return (Pair){left, right};
+  return (Pair) {left, right};
 }
 
 
-void set_var(const std::string &str){
+void set_var(const std::string &str) {
   using namespace Parsers;
   Pair pair = split_equation(str);
   if(!check(pair.left))
@@ -282,7 +282,7 @@ void set_var(const std::string &str){
   mpz_class value;
   double value_f;
   try {
-    switch(mode){
+    switch(mode) {
     case Integer:
       value = Int::eval(expr);
       Int::parser.set_var(id, value);
@@ -299,7 +299,7 @@ void set_var(const std::string &str){
 }
 
 
-void set_const(const std::string &str){
+void set_const(const std::string &str) {
   using namespace Parsers;
   Pair pair = split_equation(str);
   if(!check(pair.left))
@@ -309,7 +309,7 @@ void set_const(const std::string &str){
   mpz_class value;
   double value_f;
   try {
-    switch(mode){
+    switch(mode) {
     case Integer:
       value = Int::eval(expr);
       Int::parser.set_const(id, value);
@@ -326,10 +326,10 @@ void set_const(const std::string &str){
 }
 
 
-void unset(const std::string &str){
+void unset(const std::string &str) {
   using namespace Parsers;
   try {
-    switch(mode){
+    switch(mode) {
     case Integer:
       Int::parser.unset(str);
       break;
@@ -342,7 +342,7 @@ void unset(const std::string &str){
 }
 
 
-void dump(const std::string &str){
+void dump(const std::string &str) {
   using namespace Parsers;
   Pair pair = split_equation(str);
   int p = pair.left.find(":");
@@ -350,7 +350,7 @@ void dump(const std::string &str){
   std::string dump_mode;
   std::string var;
   std::string expr;
-  if(p != std::string::npos){
+  if(p != std::string::npos) {
     dump_mode = pair.left.substr(0, p);
     var = pair.left.substr(p+1);
     expr = pair.right;
@@ -361,19 +361,19 @@ void dump(const std::string &str){
     dump_mode = pair.right.substr(0, q);
     expr = pair.right.substr(q+1);
   }
-  if(dump_mode.size() == 0){
+  if(dump_mode.size() == 0) {
     std::cerr << "Missing mode name\n";
     return;
-  } else if(var.size() == 0){
+  } else if(var.size() == 0) {
     std::cerr << "Missing variable name\n";
     return;
-  } else if(expr.size() == 0){
+  } else if(expr.size() == 0) {
     std::cerr << "Missing expression\n";
     return;
   }
   if(!check(var))
     return;
-  switch(mode){
+  switch(mode) {
   case Integer:
     if(dump_mode == "float") {
       try {
@@ -406,16 +406,16 @@ void dump(const std::string &str){
 }
 
 
-void root(const std::string &str){
+void root(const std::string &str) {
   using namespace Parsers;
   int p0 = str.find(":");
-  if(p0 == std::string::npos){
+  if(p0 == std::string::npos) {
     std::cerr << "Missing separator \":\"\n";
     return;
-  } else if(p0 == 0){
+  } else if(p0 == 0) {
     std::cerr << "Missing unknown number\n";
     return;
-  } else if(p0 == str.size()-1){
+  } else if(p0 == str.size()-1) {
     std::cerr << "Missing equation\n";
     return;
   }
@@ -423,10 +423,10 @@ void root(const std::string &str){
   if(!check(var))
     return;
   int p1 = str.find("@");
-  if(p1 == std::string::npos){
+  if(p1 == std::string::npos) {
     std::cerr << "Missing separator \"@\"\n";
     return;
-  } else if(p1 == str.size()-1){
+  } else if(p1 == str.size()-1) {
     std::cerr << "Missing initial value\n";
     return;
   }
@@ -437,7 +437,7 @@ void root(const std::string &str){
   const std::string &right = pair.right;
   double x, x_last, fx, fx1, fx2, d;
   int count = 0;
-  if(mode != Float){
+  if(mode != Float) {
     std::cerr << "Finding root is only available in float mode\n";
     return;
   }
@@ -459,7 +459,7 @@ void root(const std::string &str){
       d = (fx1 - fx2)/1e-5;
       x += 5e-6;
       x -= fx/d;
-      if(++count > 1000){
+      if(++count > 1000) {
 	std::cerr << "Cannot get proper result after an 1000-time-loop\n";
 	break;
       }	
@@ -471,25 +471,25 @@ void root(const std::string &str){
 }
 
 
-void sequence(const std::string &str){
+void sequence(const std::string &str) {
   using namespace Parsers;
   int p = str.find(":");
-  if(p == std::string::npos){
+  if(p == std::string::npos) {
     std::cerr << "Missing \":\"\n";
     return;
   }
-  if(p == 0){
+  if(p == 0) {
     std::cerr << "Missing the number of repetitions\n";
     return;
   }
-  if(p == str.size()-1){
+  if(p == str.size()-1) {
     std::cerr << "Missing expression\n";
     return;
   }
   std::string count = str.substr(0, p);
   std::string args = str.substr(p+1);
   mpz_class l;
-  switch(mode){
+  switch(mode) {
   case Integer:
     try {
       l = Int::eval(count);
@@ -526,7 +526,7 @@ void sequence(const std::string &str){
   double &I_f = Double::parser.variables["_"];
   try {
     for(mpz_class i=0; i<l; i++) {
-      switch(mode){
+      switch(mode) {
       case Integer:
 	I = i;
 	break;
@@ -540,7 +540,7 @@ void sequence(const std::string &str){
 	  return;
 	const std::string &id = pair.left;
 	const std::string &expr = pair.right;
-	switch(mode){
+	switch(mode) {
 	case Integer:
 	  Int::parser.set_var(id, Int::eval(expr));
 	  break;
@@ -550,7 +550,7 @@ void sequence(const std::string &str){
 	}
       }
       for(const std::string &I: expressions) {
-	switch(mode){
+	switch(mode) {
 	case Integer:
 	  std::cout << Int::eval(I) << ' ';
 	  break;
@@ -567,7 +567,7 @@ void sequence(const std::string &str){
 }
 
 
-void def(const std::string &str){
+void def(const std::string &str) {
   using namespace Parsers;
   std::string id;
   std::vector<std::string> arguments;
@@ -576,34 +576,34 @@ void def(const std::string &str){
   std::vector<std::string> temp;
 
   int p = str.find('=');
-  if(p == std::string::npos){
+  if(p == std::string::npos) {
     std::cerr << "Missing \"=\"\n";
     return;
   }
-  if(p == 0){
+  if(p == 0) {
     std::cerr << "Missing identifier\n";
     return;
   }
-  if(p == str.size()-1){
+  if(p == str.size()-1) {
     std::cerr << "Missing expression\n";
     return;
   }
   std::string left = str.substr(0, p);
   std::string right = str.substr(p+1);
   p = left.find('(');
-  if(p == 0){
+  if(p == 0) {
     std::cerr << "Missing identifier";
     return;
   }
-  if(p == left.size()-1){
+  if(p == left.size()-1) {
     std::cerr << "Missing \")\"";
     return;
   }
-  if(p == std::string::npos){
+  if(p == std::string::npos) {
     if(!check(id = left))
       return;
   }else{
-    if(left[left.size()-1] != ')'){
+    if(left[left.size()-1] != ')') {
       std::cerr << "Missing \")\"";
       return;
     }
@@ -615,18 +615,18 @@ void def(const std::string &str){
   if(!split(temp, right, ';', false))
     return;
   int i;
-  for(i=0; i<temp.size(); i++){
+  for(i=0; i<temp.size(); i++) {
     p = temp[i].find(':');
-    if(p == std::string::npos){
+    if(p == std::string::npos) {
       conditions.push_back("1");
       expressions.push_back(temp[i]);
       continue;
     }
-    if(p == 0){
+    if(p == 0) {
       std::cerr << "Missing condition\n";
       return;
     }
-    if(p == temp[i].size()-1){
+    if(p == temp[i].size()-1) {
       std::cerr << "Missing expression\n";
       return;
     }
@@ -635,7 +635,7 @@ void def(const std::string &str){
   }
 
   try{
-    switch(mode){
+    switch(mode) {
     case Integer:
       Int::parser.set_function(id, conditions, expressions, arguments);
       break;
@@ -648,7 +648,7 @@ void def(const std::string &str){
 }
 
 
-void parse_logical_line(const std::string &raw_line){
+void parse_logical_line(const std::string &raw_line) {
   if(!raw_line.size())
     return;
 
@@ -661,15 +661,15 @@ void parse_logical_line(const std::string &raw_line){
   const std::string line = raw_line.substr(0, end);
 
   int start = line.find(" ");
-  if(start == std::string::npos || start == line.size()-1){
+  if(start == std::string::npos || start == line.size()-1) {
     eval(std::regex_replace(line, Expr::BLANK, ""));
     return;
   }
   std::string cmd = line.substr(0, start);
   int i = 0;
   /* NULL means end of list */
-  while(commands[i].exec != NULL){
-    if(commands[i].name == cmd){
+  while(commands[i].exec != NULL) {
+    if(commands[i].name == cmd) {
       commands[i].exec(std::regex_replace(line.substr(start+1, line.size()-start-1), Expr::BLANK, ""));
       break;
     }
@@ -680,7 +680,7 @@ void parse_logical_line(const std::string &raw_line){
 }
 
 
-void parse_line(const std::string &line){
+void parse_line(const std::string &line) {
   /* split logical lines */
   int start = 0, end = 0;
   std::string temp;
@@ -694,9 +694,9 @@ void parse_line(const std::string &line){
 }
 
 
-bool read_file(const std::string &file_name){
+bool read_file(const std::string &file_name) {
   std::ifstream file(file_name);
-  if(!file.good()){
+  if(!file.good()) {
     return false;
   }
   std::string line;
@@ -706,7 +706,7 @@ bool read_file(const std::string &file_name){
 }
 
 
-void import(const std::string &str){
+void import(const std::string &str) {
   Mode mode_prev = mode;
   mode = Float;
   if(!read_file(str+".ecs"))

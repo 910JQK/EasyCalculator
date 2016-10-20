@@ -27,7 +27,7 @@ namespace Expr {
   struct FunctionExpression {
     std::string expr_condition;
     std::string expr_value;
-    FunctionExpression(std::string condition, std::string value){
+    FunctionExpression(std::string condition, std::string value) {
       expr_condition = condition;
       expr_value = value;
     }

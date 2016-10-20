@@ -8,7 +8,7 @@ namespace Parsers {
   namespace Int {
     extern Expr::Parser<mpz_class> parser;
     extern void init();
-    extern inline mpz_class eval(const std::string &expression){
+    extern inline mpz_class eval(const std::string &expression) {
       return parser.parse(expression);
     }
     extern void factor(mpz_class n);
@@ -29,7 +29,7 @@ namespace Parsers {
   namespace Double {
     extern Expr::Parser<double> parser;
     extern void init();
-    extern inline double eval(const std::string &expression){
+    extern inline double eval(const std::string &expression) {
       return parser.parse(expression);
     }
     double convert(const std::string &str);

@@ -16,43 +16,43 @@ const std::regex BLANK("[ \\n\\t\\0]+");
 
 
 template <class T>
-T logical_not(const T &operand){
+T logical_not(const T &operand) {
   return !operand;
 }
 
 
 template <class T>
-T unary_plus(const T &operand){
+T unary_plus(const T &operand) {
   return operand;
 }
 
 
 template <class T>
-T unary_minus(const T &operand){
+T unary_minus(const T &operand) {
   return -operand;
 }
 
 
 template <class T>
-T plus(const T &left, const T &right){
+T plus(const T &left, const T &right) {
   return left + right;
 }
 
 
 template <class T>
-T minus(const T &left, const T &right){
+T minus(const T &left, const T &right) {
   return left - right;
 }
 
 
 template <class T>
-T multiply(const T &left, const T &right){
+T multiply(const T &left, const T &right) {
   return left * right;
 }
 
 
 template <class T>
-T divide(const T &left, const T &right){
+T divide(const T &left, const T &right) {
   if(right == 0)
     throw "Math Error: Division by zero";
   return left / right;
@@ -60,83 +60,83 @@ T divide(const T &left, const T &right){
 
 
 template <class T>
-T less_than(const T &left, const T &right){
+T less_than(const T &left, const T &right) {
   return (left < right);
 }
 
 
 template <class T>
-T greater_than(const T &left, const T &right){
+T greater_than(const T &left, const T &right) {
   return (right < left);
 }
 
 
 template <class T>
-T less_than_or_equal(const T &left, const T &right){
+T less_than_or_equal(const T &left, const T &right) {
   return !(right < left);
 }
 
 
 template <class T>
-T greater_than_or_equal(const T &left, const T &right){
+T greater_than_or_equal(const T &left, const T &right) {
   return !(left < right);
 }
 
 
 template <class T>
-T equal(const T &left, const T &right){
+T equal(const T &left, const T &right) {
   return (left == right);
 }
 
 
 template <class T>
-T not_equal(const T &left, const T &right){
+T not_equal(const T &left, const T &right) {
   return !(left == right);
 }
 
 
 template <class T>
-T logical_and(const T &left, const T &right){
+T logical_and(const T &left, const T &right) {
   return (left && right);
 }
 
 
 template <class T>
-T logical_or(const T &left, const T &right){
+T logical_or(const T &left, const T &right) {
   return (left || right);
 }
 
 
 template <class T>
-static T empty_function(const T &oprand){
+static T empty_function(const T &oprand) {
 
 }
 
 
 template <class T>
-inline bool key(const std::unordered_map<std::string, T> &map, std::string k){
+inline bool key(const std::unordered_map<std::string, T> &map, std::string k) {
   return (map.find(k) != map.end());
 }
 
 
-inline bool is_ident_char(char c){
+inline bool is_ident_char(char c) {
   return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_');  
 }
 
 
-inline bool is_ident_begin(char c){
+inline bool is_ident_begin(char c) {
   return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_');
 }
 
 
 template <class T>
-Operator<T>::Operator(){
+Operator<T>::Operator() {
 
 }
 
   
 template <class T>
-Operator<T>::Operator(Associativity assoc_init, int priority_init, T (*exec_init)(const T &operand_left, const T &operand_right)){
+Operator<T>::Operator(Associativity assoc_init, int priority_init, T (*exec_init)(const T &operand_left, const T &operand_right)) {
   assoc = assoc_init;
   priority = priority_init;
   exec = exec_init;
@@ -145,7 +145,7 @@ Operator<T>::Operator(Associativity assoc_init, int priority_init, T (*exec_init
 
 
 template <class T>
-Operator<T>::Operator(Associativity assoc_init, int priority_init, T (*exec_init)(const T &operand)){
+Operator<T>::Operator(Associativity assoc_init, int priority_init, T (*exec_init)(const T &operand)) {
   assoc = assoc_init;
   priority = priority_init;
   exec_unary = exec_init;
@@ -162,23 +162,23 @@ template <class T>
 struct Token {
   TokenType type;
   std::string str;
-  Token(TokenType t, const std::string s){
+  Token(TokenType t, const std::string s) {
     type = t;
     str = s;
   }
 };
 
 
-inline void replace_function_args(std::string &expression, const std::vector<std::string> &args){
+inline void replace_function_args(std::string &expression, const std::vector<std::string> &args) {
   expression = std::regex_replace(expression, BLANK, "");
   int i, start, l;
   std::string s;
-  for(i=0; i<args.size(); i++){
+  for(i=0; i<args.size(); i++) {
     start = 0;
     l = args[i].size();
-    while((start = expression.find(args[i], start)) != std::string::npos){
+    while((start = expression.find(args[i], start)) != std::string::npos) {
       s = std::to_string(i);
-      if(!(start > 0 && is_ident_char(expression[start-1])) && !(start + l < expression.size() && is_ident_char(expression[start+l])) ){
+      if(!(start > 0 && is_ident_char(expression[start-1])) && !(start + l < expression.size() && is_ident_char(expression[start+l])) ) {
 	expression.replace(start, args[i].size(), std::string("_") + s);
 	start += (1 + s.size());
       }
@@ -189,13 +189,13 @@ inline void replace_function_args(std::string &expression, const std::vector<std
   
 
 template<class T>
-Function<T>::Function(){
+Function<T>::Function() {
 
 }
 
 
 template<class T>
-Function<T>::Function(T (*exec_function)(const std::vector<T> &argv), int num_args){
+Function<T>::Function(T (*exec_function)(const std::vector<T> &argv), int num_args) {
   exec = exec_function;
   argc = num_args;
   builtin = true;
@@ -203,10 +203,10 @@ Function<T>::Function(T (*exec_function)(const std::vector<T> &argv), int num_ar
 
 
 template<class T>
-Function<T>::Function(const std::vector<FunctionExpression> &expressions, const std::vector<std::string> &args){
+Function<T>::Function(const std::vector<FunctionExpression> &expressions, const std::vector<std::string> &args) {
   expr = expressions;
   int i;
-  for(i=0; i<expr.size(); i++){
+  for(i=0; i<expr.size(); i++) {
     replace_function_args(expr[i].expr_condition, args);
     replace_function_args(expr[i].expr_value, args);
   }
@@ -216,7 +216,7 @@ Function<T>::Function(const std::vector<FunctionExpression> &expressions, const 
 
 
 template <class T>
-Parser<T>::Parser(T (*convert_function)(const std::string &str), std::string operator_chars_str_add){
+Parser<T>::Parser(T (*convert_function)(const std::string &str), std::string operator_chars_str_add) {
   convert = convert_function;
   operator_chars = std::string("#+-*/<>=&|!") + operator_chars_str_add;
   Operator<T> sentinel(L, 0, empty_function);
@@ -258,25 +258,25 @@ Parser<T>::Parser(T (*convert_function)(const std::string &str), std::string ope
 
 
 template <class T>
-Parser<T>::~Parser(){
+Parser<T>::~Parser() {
 
 }
 
 
 template <class T>
-bool Parser<T>::is_operator_char(char c){
+bool Parser<T>::is_operator_char(char c) {
   return (operator_chars.find(c) != std::string::npos);
 }
 
 
 template <class T>
-bool Parser<T>::is_id_available(const std::string &id){
+bool Parser<T>::is_id_available(const std::string &id) {
   return !(key(constants, id) || key(variables, id) || key(functions, id));
 }
 
 
 template <class T>
-void Parser<T>::set_const(const std::string &id, T value){
+void Parser<T>::set_const(const std::string &id, T value) {
   if(!id.size())
     throw "Constant was set with empty identifier";
   if(id[0] == '_')
@@ -292,7 +292,7 @@ void Parser<T>::set_const(const std::string &id, T value){
 
 
 template <class T>
-void Parser<T>::set_var(const std::string &id, T value){
+void Parser<T>::set_var(const std::string &id, T value) {
   if(!id.size())
     throw "Variable was set with empty identifier";
   if(id[0] == '_')
@@ -304,7 +304,7 @@ void Parser<T>::set_var(const std::string &id, T value){
 
 
 template <class T>
-void Parser<T>::set_function(const std::string &id, const std::vector<std::string> &conditions, const std::vector<std::string> &expressions, const std::vector<std::string> &arguments){
+void Parser<T>::set_function(const std::string &id, const std::vector<std::string> &conditions, const std::vector<std::string> &expressions, const std::vector<std::string> &arguments) {
   if(key(constants, id) || key(variables, id))
     throw "This identifier is in use";
   if(key(functions, id) && functions[id].builtin)
@@ -315,20 +315,20 @@ void Parser<T>::set_function(const std::string &id, const std::vector<std::strin
     throw "Function name cannot be \"ans\", which is reserved";
   std::vector<FunctionExpression> f_expressions;
   int i;
-  for(i=0; i<conditions.size(); i++){
-    f_expressions.push_back((FunctionExpression){conditions[i], expressions[i]});
+  for(i=0; i<conditions.size(); i++) {
+    f_expressions.push_back((FunctionExpression) {conditions[i], expressions[i]});
   }
   functions[id] = Function<T>(f_expressions, arguments);
 }
 
 
 template <class T>
-void Parser<T>::unset(const std::string &id){
-  if(key(variables, id)){
+void Parser<T>::unset(const std::string &id) {
+  if(key(variables, id)) {
     variables.erase(id);
-  } else if(key(constants, id)){
+  } else if(key(constants, id)) {
     constants.erase(id);
-  } else if(key(functions, id)){
+  } else if(key(functions, id)) {
     if(functions[id].builtin)
       throw id + " is builtin";
     else
@@ -339,7 +339,7 @@ void Parser<T>::unset(const std::string &id){
 }
 
 
-inline bool check_local_var_id(std::string s){
+inline bool check_local_var_id(std::string s) {
   int i;
   for(i=1; i<s.size(); i++)
     if(!(s[i] >= '0' && s[i] <= '9'))
@@ -349,15 +349,15 @@ inline bool check_local_var_id(std::string s){
 
 
 template <class T>
-inline void check_operand(const std::stack<T> &output){
+inline void check_operand(const std::stack<T> &output) {
     if(output.empty())
       throw "Missing operand";
 }
 
 
 template <class T>
-inline void eval_operator(Operator<T> &op, std::stack<T> &output){
-  if(!op.unary){
+inline void eval_operator(Operator<T> &op, std::stack<T> &output) {
+  if(!op.unary) {
     check_operand(output);
     T operand_right = output.top();
     output.pop();
@@ -375,7 +375,7 @@ inline void eval_operator(Operator<T> &op, std::stack<T> &output){
 
 
 template <class T>
-T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
+T Parser<T>::parse(std::string str, std::vector<T> &local_variables) {
   if(blank_recheck_enabled)
     str = std::regex_replace(str, BLANK, "");
   #ifdef PARSER_DEBUG
@@ -392,7 +392,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
   bool read_dot = false;
   
   int i, len = str.size();
-  for(i=0; i<len; i++){
+  for(i=0; i<len; i++) {
     char c = str[i];
     /* There should be a special check for scientific notation of float numbers */
     if(is_operator_char(c) && !(scientific_notation_enabled && i > 0 && (c == '-' || c == '+') && (str[i-1] == 'e' || str[i-1] == 'E')) )
@@ -413,40 +413,40 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
     if(status == ident && !is_ident_char(c))
       throw "ILLEGAL identifier";
 
-    if(status == num){
-      if(scientific_notation_enabled){
-	if(c == 'e' || c == 'E'){
+    if(status == num) {
+      if(scientific_notation_enabled) {
+	if(c == 'e' || c == 'E') {
 	  if(read_e)
 	    throw "ILLEGAL number";
 	  read_e = true;
-	} else if(c == '+' || c == '-'){
+	} else if(c == '+' || c == '-') {
 	  if(str[i-1] != 'e' && str[i-1] != 'E')
 	    throw "ILLEGAL number";
 	  // else ok
-	} else if(c != '.' && !(c >= '0' && c <= '9')){
+	} else if(c != '.' && !(c >= '0' && c <= '9')) {
 	  throw "ILLEGAL number";
 	}
       }
-      if(decimal_point_enabled){
-	if(c == '.'){
+      if(decimal_point_enabled) {
+	if(c == '.') {
 	  if(read_dot)
 	    throw "ILLEGAL number";
 	  read_dot = true;
-	} else if(!scientific_notation_enabled && !(c >= '0' && c <= '9')){
+	} else if(!scientific_notation_enabled && !(c >= '0' && c <= '9')) {
 	  throw "ILLEGAL number";
 	}
       }
       if(
 	 (!decimal_point_enabled && !scientific_notation_enabled)
-	 && !(c >= '0' && c <= '9') ){
+	 && !(c >= '0' && c <= '9') ) {
 	throw "ILLEGAL number";
       }
     }
     #ifdef PARSER_DEBUG    
     std::cerr << "#Debug: i == " << i <<  "; status == " << status << '\n';
     #endif
-    if((status != prev && prev != initial) || (prev == parens_l || prev == parens_r)){
-      if(prev == num){
+    if((status != prev && prev != initial) || (prev == parens_l || prev == parens_r)) {
+      if(prev == num) {
 	if(scientific_notation_enabled && read_e)
 	  read_e = false;
 	if(decimal_point_enabled && read_dot)
@@ -458,7 +458,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       if((token_str == "+" || token_str == "-") && not_evaluable)
 	token_str = '(' + token_str + ')';
       /* bad fix */
-      if(!(op && (token_str == "*-" || token_str == "/-" || token_str == "^-")) ){
+      if(!(op && (token_str == "*-" || token_str == "/-" || token_str == "^-")) ) {
 	Token<T> t(prev, token_str);
 	tokens.push_back(t);
 	token_str = "";
@@ -482,10 +482,10 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
   Operator<T> o1, o2;
   Function<T> f;
   int n;
-  for(i=0; i<tokens.size(); i++){
+  for(i=0; i<tokens.size(); i++) {
 
     #ifdef PARSER_DEBUG    
-    switch(tokens[i].type){
+    switch(tokens[i].type) {
     case op:
       std::cerr << "#Debug: Token Operator " << tokens[i].str << '\n';
       break;
@@ -509,21 +509,21 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
     }
     #endif
     
-    switch(tokens[i].type){
+    switch(tokens[i].type) {
     case num:
       output.push(convert(tokens[i].str));
       break;
     case op:
       if(operators.find(tokens[i].str) == operators.end())	
 	throw std::string("Undefined operator ") + tokens[i].str;
-      if(temp.top().type == parens_l){
+      if(temp.top().type == parens_l) {
 	temp.push(tokens[i]);
 	break;
       }
       o1 = operators[tokens[i].str];
       o2 = operators[temp.top().str];
       while((o1.assoc == L && o1.priority <= o2.priority)
-	    || (o1.assoc == R && o1.priority < o2.priority)){
+	    || (o1.assoc == R && o1.priority < o2.priority)) {
 	temp.pop();
 	eval_operator(o2, output);
 	o2 = operators[temp.top().str];
@@ -534,7 +534,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       temp.push(tokens[i]);
       break;
     case parens_r:
-      while(temp.top().type != parens_l){
+      while(temp.top().type != parens_l) {
 	o1 = operators[temp.top().str];
 	/* sentinel */
 	if(!o1.priority)	  
@@ -543,24 +543,24 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
 	eval_operator(o1, output);
       }
       temp.pop();
-      if(temp.top().type == ident){
+      if(temp.top().type == ident) {
 	if(functions.find(temp.top().str) == functions.end())
 	  throw std::string("Undefined function ") + temp.top().str;
 	f = functions[temp.top().str];
 	std::vector<T> argv;
 	int j;
-	for(j=0; j<f.argc; j++){
+	for(j=0; j<f.argc; j++) {
 	  if(output.empty())
 	    throw std::string("Expect ") + std::to_string(f.argc) + " arguments but " + std::to_string(j) + " given";
 	  argv.insert(argv.begin(), output.top());
 	  output.pop();
 	}
-	if(f.builtin){
+	if(f.builtin) {
 	  output.push(f.exec(argv));
 	}else{
 	  bool ok = false;
-	  for(j=0; j<f.expr.size(); j++){
-	    if(this->parse(f.expr[j].expr_condition, argv)){
+	  for(j=0; j<f.expr.size(); j++) {
+	    if(this->parse(f.expr[j].expr_condition, argv)) {
 	      output.push(this->parse(f.expr[j].expr_value, argv));
 	      ok = true;
 	      break;
@@ -573,7 +573,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       }
       break;
     case ident:
-      if(i+1 < tokens.size() && tokens[i+1].type == parens_l){
+      if(i+1 < tokens.size() && tokens[i+1].type == parens_l) {
 	/* function */
 	temp.push(tokens[i]);
       }else{
@@ -588,7 +588,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       }
       break;
     case comma:
-      while(temp.top().type != parens_l){
+      while(temp.top().type != parens_l) {
 	o1 = operators[temp.top().str];
 	/* sentinel */
 	if(!o1.priority)	  
@@ -599,7 +599,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
       break;
     }
   }
-  while(true){
+  while(true) {
     if(temp.top().type == parens_l)
       throw "Missing )";
     o1 = operators[temp.top().str];
@@ -619,7 +619,7 @@ T Parser<T>::parse(std::string str, std::vector<T> &local_variables){
 
 
 template <class T>
-T Parser<T>::parse(const std::string &str){
+T Parser<T>::parse(const std::string &str) {
   return parse(str, empty_vector);
 }
 
