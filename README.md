@@ -25,7 +25,7 @@ Dependencies:
 Building dependencies:
     `g++`
     `make`
-	`cmake`
+    `cmake`
     (C++11 support is required)
 
 Build:
@@ -177,7 +177,7 @@ Solving linear equation systems using Gauss Elimination.
 	int expr (evaluate expr in int mode)
 	float expr (evaluate expr in float mode)
 
-Each mode has separate scope. Variables and functions defined in one mode can't be accessed in another.
+Each mode has a separate scope. Variables and functions defined in one mode can't be accessed in another. The "dump" command can be used to dump variables from one to another.
 
 ### Angle Units
 
@@ -291,6 +291,30 @@ Example:
 	1*2*5
 	>>> factor 100
 	1*2^2*5^2
+
+### Command "dump"
+
+    dump var = mode: expression (dump from mode)
+    dump mode: var = expression (dump to mode)
+
+Dump variables from/to another mode.
+
+    Ex. 1
+    >>> dump int: x = cbrt(27)
+    >>> dump t = int: lcm(x, 7)
+    >>> t
+    21
+    Ex. 2
+    >>> mode int
+    >>> dump float: t = fac(11)
+    >>> dump x = float: floor(log10(t))
+    >>> x
+    7
+
+When converting from `int` to `float` there may be an overflow. In this case, `dump` yields an infinity.
+    >>> dump p = int: P(10000, 100)
+    >>> p
+    inf
 
 ### Command "seq"
 
