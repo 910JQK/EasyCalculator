@@ -307,7 +307,7 @@ Dump variables from/to another mode.
     
     Ex. 2
     >>> mode int
-    >>> dump float: t = fac(11)
+    >>> dump float: t = P(11, 11)
     >>> float t
     3.99168e+07
     >>> dump x = float: floor(log10(t))
@@ -315,6 +315,7 @@ Dump variables from/to another mode.
     7
 
 When converting from `int` to `float` there may be an overflow. In this case, `dump` yields an infinity.
+
     >>> dump p = int: P(10000, 100)
     >>> p
     inf
