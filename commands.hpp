@@ -62,6 +62,8 @@ void set_const(const std::string &str);
 
 void unset(const std::string &str);
 
+void dump(const std::string &str);
+
 void sequence(const std::string &str);
 
 void root(const std::string &str);

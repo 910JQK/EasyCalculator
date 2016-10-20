@@ -29,10 +29,11 @@ Command commands[] = {
   {"solve", solve, "solve n\n\tSolve linear equation system of n dimensions."},
   {"set", set_var, "set name = expression\n\tSet value for variables."},
   {"const", set_const, "const name = expression\n\tDefine constants."},
+  {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
+  {"dump", dump, "dump var = mode: expression\n\tdump variable from another mode."},
   {"def", def, "def name([arg, ...]) = [condition:]experssion; [condition:expression; ...]\n\tDefine functions."},
   {"root", root, "root variable: expression = expression @ x0\n\tFind a root of the equation using Newton's Method."},
   {"seq", sequence,"seq n: [assignment1; assignment2...]: [expression1 | expression2 ...]\n\tGenerate a sequence of length n with variable \"_\" changing from 0 to n-1. Assignments and expressions are evaluated sequently."},
-  {"unset", unset, "unset name\n\tUnset variables, constants and functions."},
   {"help", help, "help command\n\tDisplay information about commands."},
   {"END_OF_LIST", NULL, ""}
 };
@@ -338,6 +339,70 @@ void unset(const std::string &str){
     }
   }
   CATCH
+}
+
+
+void dump(const std::string &str){
+  using namespace Parsers;
+  Pair pair = split_equation(str);
+  int p = pair.left.find(":");
+  bool inv = false;
+  std::string dump_mode;
+  std::string var;
+  std::string expr;
+  if(p != std::string::npos){
+    dump_mode = pair.left.substr(0, p);
+    var = pair.left.substr(p+1);
+    expr = pair.right;
+    inv = true;
+  } else {
+    int q = pair.right.find(":");
+    var = pair.left;
+    dump_mode = pair.right.substr(0, q);
+    expr = pair.right.substr(q+1);
+  }
+  if(dump_mode.size() == 0){
+    std::cerr << "Missing mode name\n";
+    return;
+  } else if(var.size() == 0){
+    std::cerr << "Missing variable name\n";
+    return;
+  } else if(expr.size() == 0){
+    std::cerr << "Missing expression\n";
+    return;
+  }
+  if(!check(var))
+    return;
+  switch(mode){
+  case Integer:
+    if(dump_mode == "float") {
+      try {
+	if(!inv)
+	  Int::parser.set_var(var, mpz_class(round(Double::eval(expr)) ) );
+	else
+	  Double::parser.set_var(var, (Int::eval(expr)).get_d() );
+      }
+      CATCH
+    } else {
+      std::cerr << "Invalid mode name\n";
+      return;
+    }
+    break;
+  case Float:
+    if(dump_mode == "int") {
+      try {
+	if(!inv)
+	  Double::parser.set_var(var, (Int::eval(expr)).get_d() );
+	else
+	  Int::parser.set_var(var, mpz_class(round(Double::eval(expr)) ) );
+      }
+      CATCH
+    } else {
+      std::cerr << "Invalid mode name\n";
+      return;
+    }
+    break;
+  }
 }
 
 
